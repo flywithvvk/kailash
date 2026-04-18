@@ -1,40 +1,13 @@
-# Model Registry & Evals
+# services/model-registry
 
-Registry of fine-tuned models, evaluation runs, and prompt/completion traces.
-
-## Consumers
-- Internal ML team
-
-## Tech stack
-- MLflow (registry + tracking)
-- LangSmith (prompt traces)
-- Braintrust (evals)
-
-## Endpoints (stub)
+Lightweight SQLite-backed model registry (MLflow-shape API).
 
 | Method | Path | Purpose |
-|--------|------|---------|
-| `GET` | `/models` | List registered models & versions. |
-| `POST` | `/models` | Register a new model version. |
-| `GET` | `/evals/{eval_id}` | Fetch an evaluation run. |
-| `GET` | `/health` | Liveness probe. |
-| `GET` | `/`       | Service metadata. |
+|---|---|---|
+| `POST` | `/models` | Register `{name, version, stage, metrics, tags, artifact_uri}`. |
+| `GET`  | `/models?name=foo` | List versions. |
+| `GET`  | `/models/{name}/{version}` | Fetch one. |
+| `POST` | `/models/{name}/{version}/promote` | `{ stage }` — dev/staging/prod/archived. |
 
-## Run locally
-
-```bash
-cd services/model-registry
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8107
-```
-
-## Docker
-
-```bash
-docker build -t kailash-ai/model-registry services/model-registry
-docker run --rm -p 8107:8107 kailash-ai/model-registry
-```
-
-## Status
-Scaffold only — endpoints return **501** until implementations land.
-See [`docs/architecture/platform-overview.md`](../../docs/architecture/platform-overview.md) for the target architecture.
+Set `MODEL_REGISTRY_DB` for a persistent path (defaults to `/tmp`). Mirror
+this API onto a real MLflow server in production.

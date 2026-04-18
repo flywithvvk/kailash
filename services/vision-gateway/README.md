@@ -1,40 +1,13 @@
-# Vision LLM Gateway
+# services/vision-gateway
 
-Route vision/text LLM calls across GPT-4o, Gemini 1.5, Claude 3.5, and OpenRouter based on cost, latency, and capability.
-
-## Consumers
-- All products
-
-## Tech stack
-- OpenRouter
-- OpenAI / Anthropic / Google GenAI SDKs
-- Cost- & latency-aware router
-
-## Endpoints (stub)
+Cost/latency-aware router over GPT-4o / Gemini 1.5 / Claude 3.5, all via OpenRouter.
 
 | Method | Path | Purpose |
-|--------|------|---------|
-| `POST` | `/chat/completions` | OpenAI-compatible completions (auto-route). |
-| `POST` | `/vision/analyze` | Analyze an image + prompt; structured JSON response. |
-| `POST` | `/embeddings` | Generate embeddings via the configured embedding model. |
-| `GET` | `/health` | Liveness probe. |
-| `GET` | `/`       | Service metadata. |
+|---|---|---|
+| `GET`  | `/models` | Tier → model mapping. |
+| `POST` | `/route`  | Dry-run the routing decision. |
+| `POST` | `/infer`  | Route + call the model. |
 
-## Run locally
-
-```bash
-cd services/vision-gateway
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8105
-```
-
-## Docker
-
-```bash
-docker build -t kailash-ai/vision-gateway services/vision-gateway
-docker run --rm -p 8105:8105 kailash-ai/vision-gateway
-```
-
-## Status
-Scaffold only — endpoints return **501** until implementations land.
-See [`docs/architecture/platform-overview.md`](../../docs/architecture/platform-overview.md) for the target architecture.
+Tiers: `fast` (`openai/gpt-4o-mini`), `balanced` (`anthropic/claude-3.5-sonnet`),
+`long` (`google/gemini-1.5-pro`). Auto-selects by prompt length unless
+caller pins a tier. Requires `OPENROUTER_API_KEY`.

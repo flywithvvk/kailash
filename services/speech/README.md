@@ -1,41 +1,13 @@
-# Speech
+# services/speech
 
-IndicWhisper ASR + multi-voice TTS for Indian languages.
-
-## Consumers
-- Ignition
-- GSTSAAS voice
-- ARJUN
-
-## Tech stack
-- AI4Bharat IndicWhisper
-- ElevenLabs (premium TTS)
-- Coqui (self-hosted TTS)
-
-## Endpoints (stub)
+Indic ASR + TTS behind a provider abstraction.
 
 | Method | Path | Purpose |
-|--------|------|---------|
-| `POST` | `/asr` | Speech-to-text (multipart audio). |
-| `POST` | `/tts` | Text-to-speech; returns audio stream. |
-| `GET` | `/health` | Liveness probe. |
-| `GET` | `/`       | Service metadata. |
+|---|---|---|
+| `GET`  | `/languages` | Supported language codes. |
+| `POST` | `/asr` | `{ audio_b64, lang }` → transcript. |
+| `POST` | `/tts` | `{ text, lang, voice }` → base64 audio. |
 
-## Run locally
-
-```bash
-cd services/speech
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8106
-```
-
-## Docker
-
-```bash
-docker build -t kailash-ai/speech services/speech
-docker run --rm -p 8106:8106 kailash-ai/speech
-```
-
-## Status
-Scaffold only — endpoints return **501** until implementations land.
-See [`docs/architecture/platform-overview.md`](../../docs/architecture/platform-overview.md) for the target architecture.
+Providers: set `SPEECH_ASR_PROVIDER=ai4bharat` (IndicWhisper) and
+`SPEECH_TTS_PROVIDER=elevenlabs|coqui`. Defaults to deterministic stubs
+so CI and offline dev work.

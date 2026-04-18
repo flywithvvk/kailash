@@ -1,40 +1,16 @@
-# Embedding & RAG
+# services/rag
 
-Shared vector store, chunking, indexing, and retrieval pipelines.
-
-## Consumers
-- All products
-
-## Tech stack
-- pgvector (start)
-- Pinecone / Qdrant (scale)
-- OpenAI / bge-m3 embeddings via Vision LLM Gateway
-
-## Endpoints (stub)
+Embeddings + shared vector store.
 
 | Method | Path | Purpose |
-|--------|------|---------|
-| `POST` | `/index` | Index a document (chunks + embeddings). |
-| `POST` | `/query` | Semantic / hybrid search with optional filters. |
-| `DELETE` | `/documents/{doc_id}` | Remove a document and its chunks. |
-| `GET` | `/health` | Liveness probe. |
-| `GET` | `/`       | Service metadata. |
+|---|---|---|
+| `POST` | `/upsert` | `{ docs: [{id, text, metadata}] }` — index documents. |
+| `POST` | `/search` | `{ query, k }` — top-k cosine-similarity hits. |
+| `GET`  | `/stats`  | Total indexed documents. |
 
-## Run locally
+Embeddings go through OpenRouter (`OPENROUTER_API_KEY`, model configurable
+via `RAG_EMBED_MODEL`). Falls back to a deterministic hash embedding when
+no key is set (useful for CI / offline).
 
-```bash
-cd services/rag
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8104
-```
-
-## Docker
-
-```bash
-docker build -t kailash-ai/rag services/rag
-docker run --rm -p 8104:8104 kailash-ai/rag
-```
-
-## Status
-Scaffold only — endpoints return **501** until implementations land.
-See [`docs/architecture/platform-overview.md`](../../docs/architecture/platform-overview.md) for the target architecture.
+Default store is in-process. Set `RAG_BACKEND=pgvector|pinecone|qdrant`
+and implement the adapter to scale out.

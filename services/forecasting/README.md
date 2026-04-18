@@ -1,38 +1,14 @@
-# Forecasting
+# services/forecasting
 
-Time-series forecasting for demand, uptime, breakdowns, and energy.
+Univariate time-series forecasting for demand, uptime, breakdowns, energy.
 
-## Consumers
-- All products
+**Endpoint**
 
-## Tech stack
-- Prophet / NeuralProphet
-- XGBoost (regressor stack)
-
-## Endpoints (stub)
-
-| Method | Path | Purpose |
-|--------|------|---------|
-| `POST` | `/forecast` | Forecast a series given history + horizon. |
-| `POST` | `/backtest` | Rolling-origin backtest with MAPE/SMAPE/MAE metrics. |
-| `GET` | `/health` | Liveness probe. |
-| `GET` | `/`       | Service metadata. |
-
-## Run locally
-
-```bash
-cd services/forecasting
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8102
+```
+POST /forecast   { series: number[], horizon: int, season?: int }
 ```
 
-## Docker
-
-```bash
-docker build -t kailash-ai/forecasting services/forecasting
-docker run --rm -p 8102:8102 kailash-ai/forecasting
-```
-
-## Status
-Scaffold only — endpoints return **501** until implementations land.
-See [`docs/architecture/platform-overview.md`](../../docs/architecture/platform-overview.md) for the target architecture.
+Returns `yhat`, `yhat_lower`, `yhat_upper`, `method`. Default is a
+light-weight EMA + trend (+ optional seasonal) baseline. Swap in Prophet
+/ NeuralProphet / XGBoost by adding an alternate provider in
+`app/service.py`.

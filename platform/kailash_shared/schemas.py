@@ -1,4 +1,4 @@
-"""Shared schemas used across KAILASH-AI platform services."""
+"""Response envelope and shared data models."""
 from __future__ import annotations
 
 from typing import Generic, Optional, TypeVar
@@ -24,6 +24,7 @@ class HealthResponse(BaseModel):
     service: str
     status: str = "ok"
     version: str
+    uptime_s: float = 0.0
 
 
 class PageInfo(BaseModel):
