@@ -9,6 +9,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **`platform/kailash_shared`** — pip-installable shared library
+  (`__init__`, `schemas`, `auth`, `config`, `logging`, `errors`, `app`)
+  exposing `build_app()` with CORS, request-id middleware, `/health`,
+  `/`, `/metrics`, and typed `PlatformError` mapping. Services install
+  it via `pip install platform/`.
+- **Real implementations** for every KAILASH-AI service (replacing the
+  previous 501 stubs):
+  - `document-ai` — PDF text extraction via `pypdf`, field-validation
+    profiles (RC book, invoice, certificate, ID proof).
+  - `forecasting` — EMA + trend + seasonal baseline, numpy-only.
+  - `anomaly` — scikit-learn `IsolationForest`.
+  - `rag` — OpenRouter embeddings + in-memory cosine store, with a
+    chained SHA-256 hash-embedding fallback for offline mode.
+  - `vision-gateway` — tier-based router (`fast` / `balanced` / `long`)
+    over OpenRouter with per-tier model selection.
+  - `speech` — provider-agnostic ASR + TTS interface with Indic locales.
+  - `model-registry` — SQLite-backed MLflow-shape registry for models,
+    versions and evaluations.
+  - `knowledge-graph` — in-memory typed graph with BFS neighbour lookup.
+  - `automobile-llm` — OpenRouter chat bound to an automobile-domain
+    system prompt (the moat service).
+- **`services/*/app/routes.py`** + **`app/service.py`** pattern — all 9
+  services share the same layout. Every domain route is guarded by
+  `require_internal_token`.
+- **Test coverage** — `tests/platform/test_shared.py` (5 tests) plus
+  `tests/test_routes.py` for each of the 9 services (53 tests total);
+  all green on Python 3.11 and 3.14.
+- **Dev tooling** — top-level `Makefile` (`venv`, `lint`, `format`,
+  `test`, `compose-up`, `compose-down`), `ruff.toml`, and
+  `.pre-commit-config.yaml`.
+- **CI matrix** — `.github/workflows/ci.yml` rewritten into six jobs:
+  `lint`, `shared`, `services` (9-way matrix), `backend`, `frontend`,
+  `compose-build`.
+- **`SECURITY.md`** — secret-handling playbook and vulnerability
+  reporting process.
+- Professional top-level `README.md` and `ARCHITECTURE.md` with Mermaid
+  diagrams, service catalog, and contract documentation.
+
+### Changed
+
+- **`deploy/docker/docker-compose.platform.yml`** — build context moved
+  to the repo root (`context: ../..`) so each service can install the
+  shared lib.
+- **`platform/gateway/Dockerfile`** — rewritten for the new build
+  context and shared-lib install step.
+- **`scripts/generate_services.ps1`** — scaffolder now emits services
+  against the shared lib (routes / service / settings / tests / env /
+  Dockerfile).
+
+### Removed
+
+- **`platform/shared/`** — legacy module directory. Replaced by
+  `platform/kailash_shared/` as an installable package.
+
+### Fixed
+
+- `kailash_shared.logging` — replaced `logging.setLogRecordFactory`
+  (which clobbers the `service` attribute across multiple apps in the
+  same process) with an idempotent `logging.Filter`.
+- `services/rag/app/service.py` — replaced single `blake2b(digest_size=768)`
+  (which fails: max digest is 64) with chained SHA-256 to produce the
+  768-byte hash-embedding fallback.
+- `services/document-ai/requirements.txt` — added `python-multipart`
+  (required by FastAPI `UploadFile`).
+- All service `pytest.ini` — dropped unknown `asyncio_mode=auto`
+  directive that broke test discovery without `pytest-asyncio`.
+
 ---
 
 ## [1.0.0] - 2025-12-19
