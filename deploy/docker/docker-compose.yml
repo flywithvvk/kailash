@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8:8"
+    environment:
+      - MONGO_URL=mongodb://mongo:
+      - POSTGRES_URL=postgresql+asyncpg://kailash:kailash@postgres:43/kailash
+      - REDIS_URL=redis://redis:39/
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - JWT_SECRET=${JWT_SECRET:-your-jwt-secret-change-in-production}
+      - EMERGENT_LLM_KEY=${EMERGENT_LLM_KEY}
+    depends_on:
+      - mongo
+      - postgres
+      - redis
+    networks:
+      - kailash-network
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8:8"
+    depends_on:
+      - backend
+    networks:
+      - kailash-network
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - kailash-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:-alpine
+    environment:
+      POSTGRES_D: kailash
+      POSTGRES_USER: kailash
+      POSTGRES_PASSWORD: kailash
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - kailash-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - kailash-network
+    restart: unless-stopped
+
+networks:
+  kailash-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  postgres_data:
+  redis_data:
