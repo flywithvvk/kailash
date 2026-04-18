@@ -77,7 +77,7 @@ class Settings(BaseSettings):
     DATABASE_NAME: str = _database_name
     
     # JWT Settings
-    SECRET_KEY: str = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production-160494')
+    SECRET_KEY: str = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
     
@@ -91,8 +91,15 @@ class Settings(BaseSettings):
     # Emergent LLM Key
     EMERGENT_LLM_KEY: Optional[str] = None
     
-    # GANESHA Orchestrator - Claude API
+    # GANESHA Orchestrator - Claude API (direct Anthropic)
     anthropic_api_key: str = os.environ.get('ANTHROPIC_API_KEY', 'sk-ant-placeholder-will-be-added-by-user')
+
+    # OpenRouter (OpenAI-compatible gateway; preferred if set)
+    openrouter_api_key: Optional[str] = os.environ.get('OPENROUTER_API_KEY', None)
+    openrouter_base_url: str = os.environ.get('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1')
+    openrouter_model: str = os.environ.get('OPENROUTER_MODEL', 'anthropic/claude-3-haiku')
+    openrouter_site_url: Optional[str] = os.environ.get('OPENROUTER_SITE_URL', 'https://kailash-ai.in')
+    openrouter_app_name: str = os.environ.get('OPENROUTER_APP_NAME', 'KAILASH AEGIS Hub')
     
     # Emergent Platform (for future integration)
     emergent_api_url: Optional[str] = os.environ.get('EMERGENT_API_URL', None)
@@ -109,7 +116,7 @@ class Settings(BaseSettings):
     GST_SOFTWARE_API_KEY: str = os.environ.get('GST_SOFTWARE_API_KEY', '')
     
     # Pinecone RAG Configuration
-    PINECONE_API_KEY: str = os.environ.get('PINECONE_API_KEY', 'pcsk_51Jn5z_AsovmHvYsekg3cWDpCkYEJBB5vBeQV2oHmCECeUVTruyfcYBs1VP8793mC3wiga')
+    PINECONE_API_KEY: str = os.environ.get('PINECONE_API_KEY', '')
     PINECONE_INDEX: str = os.environ.get('PINECONE_INDEX', 'kailashai')
     PINECONE_HOST: str = os.environ.get('PINECONE_HOST', 'us-east-1')
     
