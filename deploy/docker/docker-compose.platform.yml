@@ -1,0 +1,78 @@
+# KAILASH-AI platform — local stack
+# Brings up the gateway + all 9 platform services with health checks.
+
+x-svc-defaults: &svc_defaults
+  restart: unless-stopped
+  environment:
+    PLATFORM_INTERNAL_TOKEN: ${PLATFORM_INTERNAL_TOKEN:-dev-token}
+  networks: [kailash]
+
+services:
+  gateway:
+    <<: *svc_defaults
+    build: ../../platform/gateway
+    ports: ["8100:8100"]
+    depends_on:
+      - document-ai
+      - forecasting
+      - anomaly
+      - rag
+      - vision-gateway
+      - speech
+      - model-registry
+      - knowledge-graph
+      - automobile-llm
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys;sys.exit(0 if urllib.request.urlopen('http://localhost:8100/health').status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  document-ai:
+    <<: *svc_defaults
+    build: ../../services/document-ai
+    ports: ["8101:8101"]
+
+  forecasting:
+    <<: *svc_defaults
+    build: ../../services/forecasting
+    ports: ["8102:8102"]
+
+  anomaly:
+    <<: *svc_defaults
+    build: ../../services/anomaly
+    ports: ["8103:8103"]
+
+  rag:
+    <<: *svc_defaults
+    build: ../../services/rag
+    ports: ["8104:8104"]
+
+  vision-gateway:
+    <<: *svc_defaults
+    build: ../../services/vision-gateway
+    ports: ["8105:8105"]
+
+  speech:
+    <<: *svc_defaults
+    build: ../../services/speech
+    ports: ["8106:8106"]
+
+  model-registry:
+    <<: *svc_defaults
+    build: ../../services/model-registry
+    ports: ["8107:8107"]
+
+  knowledge-graph:
+    <<: *svc_defaults
+    build: ../../services/knowledge-graph
+    ports: ["8108:8108"]
+
+  automobile-llm:
+    <<: *svc_defaults
+    build: ../../services/automobile-llm
+    ports: ["8109:8109"]
+
+networks:
+  kailash:
+    driver: bridge

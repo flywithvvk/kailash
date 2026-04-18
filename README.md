@@ -1,152 +1,95 @@
-# KAILASH — AEGIS Hub
+# KAILASH-AI
 
-**AI-Powered Organizational Management Platform for Go4Garage URGAA**
+> **The engine room.** Shared ML/AI platform that powers every sibling
+> product. Not sold directly — treat as internal infrastructure.
 
-[![Status](https://img.shields.io/badge/status-production--ready-success)](./docs/deployment/production-deployment.md)
-[![Domain](https://img.shields.io/badge/domain-kailash--ai.in-blue)](https://kailash-ai.in)
-[![License](https://img.shields.io/badge/license-Proprietary-lightgrey)](./LICENSE)
+KAILASH-AI exposes nine services behind a single gateway. Consumer
+products (URGAA, GSTSAAS, Ignition, ARJUN, AEGIS Hub) call into the
+gateway over HTTP with a shared internal token.
 
-KAILASH AEGIS Hub is a command-center platform for managing EV charging operations
-at scale. It orchestrates 20 AI "deity" departments and 4 specialized sub-agents
-across a FastAPI backend, a React frontend, and a MongoDB data layer.
+| Service | Port | Purpose |
+|---|---|---|
+| `platform/gateway`         | 8100 | Reverse proxy, auth forwarding, tracing |
+| `services/document-ai`     | 8101 | OCR, layout, extraction, validation |
+| `services/forecasting`     | 8102 | Demand, uptime, breakdown, energy |
+| `services/anomaly`         | 8103 | SLA / fraud / trust anomaly detection |
+| `services/rag`             | 8104 | Embeddings + shared vector store |
+| `services/vision-gateway`  | 8105 | Routes GPT-4o / Gemini 1.5 / Claude 3.5 |
+| `services/speech`          | 8106 | IndicWhisper ASR + TTS |
+| `services/model-registry`  | 8107 | MLflow + LangSmith + Braintrust |
+| `services/knowledge-graph` | 8108 | Neo4j + Cypher over embeddings |
+| `services/automobile-llm`  | 8109 | Llama-3.1-8B → 13B fine-tune (the moat) |
 
----
-
-## Table of Contents
-
-- [Architecture](#architecture)
-- [Repository Layout](#repository-layout)
-- [Quick Start](#quick-start)
-- [Development](#development)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
-## Architecture
-
-| Layer      | Technology                               | Location            |
-| ---------- | ---------------------------------------- | ------------------- |
-| Frontend   | React, TailwindCSS, CRACO                | `apps/frontend`     |
-| Backend    | FastAPI (Python 3.11+), Motor, Pydantic  | `apps/backend`      |
-| Database   | MongoDB / MongoDB Atlas                  | —                   |
-| AI Agents  | GANESHA, VISHWAKARMA, SURYA, 17 others   | `apps/backend/agents` |
-| Runtime    | Docker, Docker Compose, Nginx            | `deploy/docker`     |
-
-See [`docs/architecture`](./docs/architecture) for detailed diagrams and flows.
+Full design, capability matrix, and the Automobile-LLM moat strategy are
+in [`docs/architecture/platform-overview.md`](docs/architecture/platform-overview.md).
+Quick visual: [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 ## Repository Layout
 
 ```
-kailash/
-├── apps/
-│   ├── backend/            # FastAPI service, agents, routers
-│   └── frontend/           # React SPA
-├── deploy/
-│   ├── docker/             # docker-compose.yml, nginx.conf
-│   └── scripts/            # Deployment / verification shell scripts
-├── docs/
-│   ├── api/                # API reference & quick-reference
-│   ├── architecture/       # System design, flows, audits
-│   ├── business/           # BRD, branding, market gaps
-│   ├── deployment/         # Deploy & DB setup guides
-│   ├── guides/             # Integration / operator guides
-│   └── reports/            # Historical status, summaries, audits
-├── scripts/                # Operational scripts (MongoDB, health checks)
-├── tests/
-│   ├── backend/            # Backend test suites
-│   └── integration/        # Cross-service / demo tests
-├── tools/                  # One-off utilities (seed, inspectors)
-├── .devcontainer/          # VS Code dev-container definition
-├── .github/                # Workflows & Copilot instructions
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── LICENSE
-└── README.md
+apps/                  Consumer apps (AEGIS Hub backend + frontend)
+platform/
+  gateway/             Single entry point for consumers
+  shared/              Response envelope, internal auth
+services/              The 9 KAILASH-AI services (FastAPI, Dockerized)
+deploy/docker/         docker-compose files (incl. docker-compose.platform.yml)
+docs/                  architecture, api, deployment, guides
+scripts/ · tools/      dev & ops utilities
+tests/                 cross-cutting tests
 ```
 
 ## Quick Start
 
-### Prerequisites
-- Python 3.11+
-- Node.js 18+ and Yarn
-- MongoDB 6+ (local or Atlas)
-- Docker 24+ (optional, for containerized run)
+### Run the whole platform locally
 
-### Run with Docker Compose
 ```bash
 cd deploy/docker
-docker compose up --build
+docker compose -f docker-compose.platform.yml up -d
+curl http://localhost:8100/health
+curl http://localhost:8100/document-ai/health
 ```
-Backend: `http://localhost:8000`  · Frontend: `http://localhost:3000`
 
-### Run Locally
+### Run the AEGIS Hub consumer (backend)
 
-**Backend**
 ```bash
 cd apps/backend
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+cp .env.example .env            # fill in your keys (OpenRouter, Mongo, etc.)
 pip install -r requirements.txt
-uvicorn server:app --reload
+uvicorn app.main:app --reload
 ```
 
-**Frontend**
-```bash
-cd apps/frontend
-yarn install
-yarn start
-```
+## AI Provider Configuration
 
-## Development
+The backend chooses an LLM provider in this precedence:
 
-- Coding standards and workflow: see [`CONTRIBUTING.md`](./CONTRIBUTING.md).
-- Editor defaults are enforced via [`.editorconfig`](./.editorconfig).
-- A pre-configured dev container is available under [`.devcontainer/`](./.devcontainer).
+1. `OPENROUTER_API_KEY` → OpenAI-compatible `/chat/completions`
+2. `ANTHROPIC_API_KEY`  → Claude direct
+3. Keyword fallback (no network calls)
 
-## Testing
+See `apps/backend/.env.example`.
 
-```bash
-# Backend unit & integration
-pytest tests/backend
+## Service Contract
 
-# Full integration / demo flows
-pytest tests/integration
-```
+Every service exposes:
 
-See [`docs/reports/test-results.md`](./docs/reports/test-results.md) for the
-historical testing protocol.
+- `GET /health` — `{ "service": "...", "status": "ok", "version": "..." }`
+- `GET /`       — metadata
+- Domain endpoints returning `platform.shared.schemas.ApiResponse`
 
-## Deployment
+Internal auth: callers send `X-Platform-Token`; services validate via
+`platform.shared.auth.require_internal_token`. The gateway forwards the
+header unchanged and propagates `x-request-id`.
 
-Production deployment is containerized and documented in:
+## Security & Secrets
 
-- [`docs/deployment/production-deployment.md`](./docs/deployment/production-deployment.md)
-- [`docs/deployment/production-database-setup.md`](./docs/deployment/production-database-setup.md)
-- [`deploy/scripts/`](./deploy/scripts) — automation and verification scripts
-
-## Documentation
-
-| Topic         | Entry point                                                            |
-| ------------- | ---------------------------------------------------------------------- |
-| Overview      | [`docs/guides/kailash-overview.md`](./docs/guides/kailash-overview.md) |
-| Master guide  | [`docs/guides/master-documentation.md`](./docs/guides/master-documentation.md) |
-| API reference | [`docs/api/api-reference.md`](./docs/api/api-reference.md)             |
-| Architecture  | [`docs/architecture/`](./docs/architecture)                            |
-| Deployment    | [`docs/deployment/`](./docs/deployment)                                |
-| Reports       | [`docs/reports/`](./docs/reports)                                      |
+- **No real secrets in the repo.** `.env.example` files are the source of truth for variable names.
+- Push protection is enabled upstream; commits containing provider keys are rejected automatically.
+- If a secret ever lands: rotate the key at the provider, then scrub history.
 
 ## Contributing
 
-Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md) for branch naming, commit
-conventions, review expectations, and the local tooling setup.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## License
 
-This project is proprietary to **Go4Garage (URGAA)**. See [`LICENSE`](./LICENSE).
-
----
-
-_Maintainer: Go4Garage Engineering · Patna, India_
+Proprietary — see [`LICENSE`](LICENSE).
