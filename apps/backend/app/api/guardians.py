@@ -41,7 +41,7 @@ async def parvati_report(current_user: User = Depends(get_current_active_user)):
 async def block_ip(ip: str, duration: int = 3, current_user: User = Depends(get_current_active_user)):
     """Manually block an IP address"""
     if not current_user.is_admin:
-        raise HTTPException(status_code=43, detail="Admin access required")
+        raise HTTPException(status_code=403, detail="Admin access required")
     
     await shiv_guardian.intervene({"type": "brute_force", "ip": ip})
     return {"message": f"IP {ip} blocked for {duration} seconds"}

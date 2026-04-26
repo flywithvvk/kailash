@@ -7,19 +7,22 @@ from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
 import logging
 import traceback
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
 
 # Create logs directory
-Path("/app/logs").mkdir(exist_ok=True)
+log_dir = Path("/var/log/kailash") if os.name != "nt" else Path("./logs")
+log_dir.mkdir(exist_ok=True, parents=True)
 
 # Configure production logging
+logging_file = log_dir / "kailash_production.log"
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s | %(levelname)-8s | %(name)-s | %(message)s',
     handlers=[
-        logging.FileHandler('/app/logs/kailash_production.log'),
+        logging.FileHandler(logging_file),
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -117,7 +120,7 @@ Emergency: {ErrorHandler.EMERGENCY_CONTACT}
 ╔═══════════════════════════════════════════════════════════════╗
 ║  SECURITY EVENT: {event_type}                                ║
 ╚═══════════════════════════════════════════════════════════════╝
-{chr().join(f'  {k}: {v}' for k, v in details.items())}
+{chr(10).join(f'  {k}: {v}' for k, v in details.items())}
 Timestamp: {datetime.now().isoformat()}
 Admin: {', '.join(ErrorHandler.ADMIN_EMAILS)}
 ╚═══════════════════════════════════════════════════════════════╝

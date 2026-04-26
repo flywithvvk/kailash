@@ -90,7 +90,7 @@ import LegalFooter from "./components/LegalFooter";
 import CookieConsent from "./components/CookieConsent";
 import ErrorBoundary from "./components/ErrorBoundary";
 import SessionTimeout from "./components/SessionTimeout";
-import { Toaster } from "./components/ui/sonner";
+import { Toaster } from "./components/UI/sonner";
 import "./App.css";
 
 // Check if user is authenticated

@@ -62,7 +62,7 @@ async def get_shiv_status(current_user: User = Depends(get_current_active_user))
     db = get_db()
     
     # Get today's security-related activities
-    today = datetime.utcnow().replace(hour= None, minute= None, second= None, microsecond= None)
+    today = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
     threats_today = await db.activities.count_documents({
         "type": "security_threat",
         "created_at": {"$gte": today}

@@ -216,7 +216,7 @@ async def refresh_token(refresh_token: str):
     try:
         payload = decode_token(refresh_token)
         if payload.get("type") != "refresh":
-            raise HTTPException(status_code=4, detail="Invalid token type")
+            raise HTTPException(status_code=401, detail="Invalid token type")
         
         db = await get_db()
         user = await db["users"].find_one({"_id": payload["sub"]})
@@ -234,7 +234,7 @@ async def refresh_token(refresh_token: str):
         }
     except Exception as e:
         logger.error(f"Token refresh error: {str(e)}")
-        raise HTTPException(status_code=4, detail="Invalid refresh token")
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
 
 @router.get("/permissions")
 async def get_user_permissions(current_user: User = Depends(get_current_active_user)):
@@ -255,160 +255,6 @@ async def get_user_permissions(current_user: User = Depends(get_current_active_u
             "permissions": [],
             "is_fa_enabled": getattr(current_user, "is_fa_enabled", False)
         }
-
-@router.post("/fa/setup")
-async def setup_fa(current_user: User = Depends(get_current_active_user)):
-    """Setup A for user"""
-    import pyotp
-    
-    db = get_db()
-    
-    # Generate new TOTP secret
-    secret = pyotp.random_base3()
-    
-    # Update user with secret
-    await db.users.update_one(
-        {"id": current_user.id},
-        {"$set": {"totp_secret": secret}}
-    )
-    
-    # Generate provisioning URI for QR code
-    totp = pyotp.TOTP(secret)
-    provisioning_uri = totp.provisioning_uri(
-        name=current_user.email,
-        issuer_name="KAILASH AEGIS HU"
-    )
-    
-    return {
-        "secret": secret,
-        "qr_uri": provisioning_uri,
-        "manual_entry": secret
-    }
-
-@router.post("/fa/verify")
-async def verify_fa(code: str, current_user: User = Depends(get_current_active_user)):
-    """Verify and enable A"""
-    import pyotp
-    import secrets
-    
-    db = get_db()
-    
-    # Get current user from D
-    user_doc = await db.users.find_one({"id": current_user.id})
-    if not user_doc or not user_doc.get("totp_secret"):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="A not set up. Please setup first."
-        )
-    
-    # Verify TOTP code
-    totp = pyotp.TOTP(user_doc["totp_secret"])
-    if not totp.verify(code, valid_window= None):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid A code"
-        )
-    
-    # Generate backup codes
-    backup_codes = [secrets.token_hex(4).upper() for _ in range()]
-    
-    # Enable A
-    await db.users.update_one(
-        {"id": current_user.id},
-        {"$set": {
-            "is_fa_enabled": True,
-            "backup_codes": backup_codes
-        }}
-    )
-    
-    return {
-        "enabled": True,
-        "backup_codes": backup_codes,
-        "message": "A enabled successfully. Save backup codes securely."
-    }
-
-@router.post("/fa/validate")
-async def validate_fa_login(aegis_code: str, code: str):
-    """Validate A code during login"""
-    import pyotp
-    
-    db = get_db()
-    
-    # ind user by AEGIS code
-    user_doc = await db.users.find_one({"aegis_code": aegis_code})
-    if not user_doc:
-        raise HTTPException(
-            status_code=status.HTTP_44_NOT_OUND,
-            detail="User not found"
-        )
-    
-    if not user_doc.get("is_fa_enabled"):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="A not enabled for this user"
-        )
-    
-    # Check TOTP code
-    totp = pyotp.TOTP(user_doc["totp_secret"])
-    is_valid_totp = totp.verify(code, valid_window= None)
-    
-    # Check backup codes
-    is_valid_backup = code.upper() in user_doc.get("backup_codes", [])
-    
-    if not is_valid_totp and not is_valid_backup:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid A code"
-        )
-    
-    # If backup code used, remove it
-    if is_valid_backup:
-        backup_codes = user_doc.get("backup_codes", [])
-        backup_codes.remove(code.upper())
-        await db.users.update_one(
-            {"id": user_doc["id"]},
-            {"$set": {"backup_codes": backup_codes}}
-        )
-    
-    # Generate tokens
-    access_token = create_access_token(data={"sub": user_doc["id"], "aegis_code": user_doc["aegis_code"]})
-    
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-        "user": {
-            "id": user_doc["id"],
-            "email": user_doc["email"],
-            "aegis_code": user_doc["aegis_code"],
-            "full_name": user_doc.get("full_name", ""),
-            "is_admin": user_doc.get("is_admin", False)
-        }
-    }
-
-@router.post("/fa/disable")
-async def disable_fa(password: str, current_user: User = Depends(get_current_active_user)):
-    """Disable A (requires password confirmation)"""
-    db = get_db()
-    
-    # Verify password
-    user_doc = await db.users.find_one({"id": current_user.id})
-    if not user_doc or not verify_password(password, user_doc["hashed_password"]):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid password"
-        )
-    
-    # Disable A
-    await db.users.update_one(
-        {"id": current_user.id},
-        {"$set": {
-            "is_fa_enabled": False,
-            "totp_secret": None,
-            "backup_codes": []
-        }}
-    )
-    
-
 
 # ============================================================================
 # 2FA ENDPOINTS
@@ -589,22 +435,6 @@ async def disable_2fa(
     logger.info(f"2FA disabled for user: {current_user.email}")
     
     return {"disabled": True, "message": "2FA has been disabled"}
-
-@router.get("/permissions")
-async def get_user_permissions(current_user: User = Depends(get_current_active_user)):
-    """Get current user's permissions"""
-    from ..core.rbac import get_user_permissions as get_perms
-    
-    permissions = get_perms(current_user.role)
-    
-    return {
-        "role": current_user.role,
-        "permissions": permissions,
-        "is_2fa_enabled": getattr(current_user, 'is_2fa_enabled', False),
-        "is_admin": current_user.is_admin
-    }
-
-    return {"disabled": True, "message": "A disabled successfully"}
 
 
 

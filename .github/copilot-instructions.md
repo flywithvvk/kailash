@@ -1,3 +1,19 @@
+---
+{
+  "id": "file_x1360wgg",
+  "filetype": "document",
+  "filename": "copilot-instructions",
+  "created_at": "2026-04-26T05:48:30.500Z",
+  "updated_at": "2026-04-26T05:48:30.501Z",
+  "meta": {
+    "location": "/",
+    "tags": [],
+    "categories": [],
+    "description": "",
+    "source": "markdown"
+  }
+}
+---
 # Copilot Instructions for AEGIS HUB (KAILASH AI)
 
 ## Project Overview

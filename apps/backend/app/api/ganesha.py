@@ -118,7 +118,7 @@ async def process_command(
             }}
         )
         raise HTTPException(
-            status_code=4,
+            status_code=408,
             detail="Command processing timed out. Your request has been queued and will be processed."
         )
         
@@ -156,7 +156,7 @@ async def get_commands(
         return [GaneshaCommandResponse(**cmd) for cmd in commands]
     except asyncio.TimeoutError:
         raise HTTPException(
-            status_code=4,
+            status_code=408,
             detail="Database query timed out. Please try again."
         )
 
@@ -175,15 +175,15 @@ async def get_command(
         )
         
         if not command_dict:
-            raise HTTPException(status_code=44, detail="Command not found")
+            raise HTTPException(status_code=404, detail="Command not found")
         
         # Check if user owns this command or is admin
         if command_dict["user_id"] != current_user.id and not current_user.is_admin:
-            raise HTTPException(status_code=43, detail="Access denied")
+            raise HTTPException(status_code=403, detail="Access denied")
         
         return GaneshaCommandResponse(**command_dict)
     except asyncio.TimeoutError:
-        raise HTTPException(status_code=4, detail="Query timed out")
+        raise HTTPException(status_code=408, detail="Query timed out")
 
 @router.get("/recent")
 async def get_recent_commands(
@@ -215,11 +215,11 @@ async def get_recent_commands(
         ]
     except asyncio.TimeoutError:
         raise HTTPException(
-            status_code=4,
+            status_code=408,
             detail="Query timed out. Please try again."
         )
     except Exception as e:
         raise HTTPException(
-            status_code=200,
+            status_code=500,
             detail=f"Error fetching recent commands: {str(e)}"
         )

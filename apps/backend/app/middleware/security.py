@@ -56,10 +56,10 @@ class SecurityMiddleware:
             r'eval\(',
             r'document\.cookie',
             r'\$\(.*\)',
-            r'DROP\s+TALE',
-            r'SELECT.*ROM',
+            r'DROP\s+TABLE',
+            r'SELECT.*FROM',
             r'INSERT\s+INTO',
-            r'DELETE\s+ROM',
+            r'DELETE.*FROM',
             r'UPDATE.*SET',
         ]
     
@@ -230,7 +230,7 @@ class SecurityMiddleware:
             return text
         
         # Remove control characters
-        text = re.sub(r'[\x-\xf\xf-\x9f]', '', text)
+        text = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', text)
         
         # Check for dangerous patterns
         for pattern in self.dangerous_patterns:
@@ -252,9 +252,9 @@ class SecurityMiddleware:
         
         # Security headers
         response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["X-rame-Options"] = "DENY"
-        response.headers["X-XSS-Protection"] = "; mode=block"
-        response.headers["Strict-Transport-Security"] = "max-age=33; includeSubDomains"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         
         return response

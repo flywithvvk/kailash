@@ -148,7 +148,7 @@ async def quick_action(
     message = action_messages.get(request.action)
     
     if not message:
-        raise HTTPException(status_code=4, detail="Invalid action")
+        raise HTTPException(status_code=400, detail="Invalid action")
     
     # Return message for frontend to process
     return {
