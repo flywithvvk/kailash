@@ -26,12 +26,8 @@ import Guardians from "./pages/Guardians";
 import AutomobilePricing from "./pages/AutomobilePricing";
 
 // V3 Feature Pages - Investor Demo
-import Executive from "./pages/Executive";
-import ExecutiveDashboard from "./pages/ExecutiveDashboard";
 import InvestorExecutiveDashboard from "./pages/InvestorExecutiveDashboard";
-import DepartmentDetail from "./pages/DepartmentDetail";
 import DepartmentDetailNew from "./pages/DepartmentDetailNew";
-import GaneshaChat from "./pages/GaneshaChat";
 import GaneshaChatV2 from "./pages/GaneshaChatV2";
 import GapsTasksManagement from "./pages/GapsTasksManagement";
 import KnowledgeBase from "./pages/KnowledgeBase";
@@ -101,7 +97,7 @@ const isAuthenticated = () => {
 // Layout wrapper to conditionally show footer
 function Layout({ children }) {
   const location = useLocation();
-  const hideFooterPaths = ["/", "/kailash", "/dashboard/executive", "/ganesha-chat"];
+  const hideFooterPaths = ["/", "/kailash", "/dashboard/executive", "/ganesha-v2"];
   const showFooter = !hideFooterPaths.includes(location.pathname) && !location.pathname.startsWith('/department/');
   const authenticated = isAuthenticated();
 
@@ -137,18 +133,8 @@ function App() {
                   <SpiritualKailashDashboard />
                 </ProtectedRoute>
               } />
-              <Route path="/kailash-v2" element={
-                <ProtectedRoute>
-                  <NewKailashDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/kailash-old" element={
-                <ProtectedRoute>
-                  <KailashDashboard />
-                </ProtectedRoute>
-              } />
-            
-            {/* Application routes with proper pages */}
+              
+              {/* Application routes with proper pages */}
             <Route path="/gst" element={
               <ProtectedRoute>
                 <GSTWebsite />
@@ -225,29 +211,14 @@ function App() {
             } />
 
             {/* V3 Investor Demo Routes */}
-            <Route path="/executive" element={
-              <ProtectedRoute noLayout={true}>
-                <Executive />
-              </ProtectedRoute>
-            } />
             <Route path="/dashboard/executive" element={
               <ProtectedRoute noLayout={true}>
                 <InvestorExecutiveDashboard />
               </ProtectedRoute>
             } />
-            <Route path="/dashboard/executive-v1" element={
-              <ProtectedRoute noLayout={true}>
-                <ExecutiveDashboard />
-              </ProtectedRoute>
-            } />
             <Route path="/department/:name" element={
               <ProtectedRoute noLayout={true}>
                 <DepartmentDetailNew />
-              </ProtectedRoute>
-            } />
-            <Route path="/ganesha-chat" element={
-              <ProtectedRoute noLayout={true}>
-                <GaneshaChat />
               </ProtectedRoute>
             } />
             <Route path="/ganesha-v2" element={
@@ -318,6 +289,13 @@ function App() {
         </Layout>
         </ToastProvider>
       </BrowserRouter>
+      <Toaster />
+    </div>
+    </ErrorBoundary>
+  );
+}
+
+export default App;uter>
       <Toaster />
     </div>
     </ErrorBoundary>
