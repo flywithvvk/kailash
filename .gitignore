@@ -33,6 +33,8 @@ dist
 # Sensitive files
 *token.json*
 *credentials.json*
+*serviceAccountKey*.json
+*firebase-adminsdk*.json
 
 # Logs and debug files
 npm-debug.log*

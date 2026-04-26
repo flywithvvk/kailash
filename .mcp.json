@@ -20,7 +20,7 @@
       "command": "npx",
       "args": ["-y", "firebase-tools", "experiments:enable", "mcp"],
       "env": {
-        "FIREBASE_PROJECT": "kailash-aegis"
+        "FIREBASE_PROJECT": "kailash-38268"
       }
     }
   }

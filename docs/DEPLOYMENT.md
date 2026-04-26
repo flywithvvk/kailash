@@ -35,7 +35,7 @@
 ```bash
 cd apps/frontend
 firebase login
-firebase use kailash-aegis
+firebase use kailash-38268
 ```
 
 ### Manual Deploy
@@ -62,8 +62,8 @@ Pushes to `main` that modify `apps/frontend/` trigger the `deploy-frontend.yml` 
 | `.env.production` | `yarn build` (production) |
 
 ### URLs
-- Production: `https://kailash-ai.in` or `https://kailash-aegis.web.app`
-- Firebase Console: `https://console.firebase.google.com/project/kailash-aegis`
+- Production: `https://kailash-ai.in` or `https://kailash-38268.web.app`
+- Firebase Console: `https://console.firebase.google.com/project/kailash-38268`
 
 ---
 
@@ -168,7 +168,12 @@ OPENROUTER_API_KEY=sk-or-v1-your-key
 # Recommended
 FRONTEND_URL=https://kailash-ai.in
 BACKEND_URL=https://api.kailash-ai.in
-ALLOWED_ORIGINS=https://kailash-ai.in,https://www.kailash-ai.in,https://kailash-aegis.web.app,https://kailash-aegis.firebaseapp.com
+ALLOWED_ORIGINS=https://kailash-ai.in,https://www.kailash-ai.in,https://kailash-38268.web.app,https://kailash-38268.firebaseapp.com
+
+# Firebase Admin (optional — for server-side Firebase features)
+FIREBASE_PROJECT_ID=kailash-38268
+FIREBASE_STORAGE_BUCKET=kailash-38268.firebasestorage.app
+# FIREBASE_SERVICE_ACCOUNT_PATH=/opt/kailash/serviceAccountKey.json
 ```
 
 ---

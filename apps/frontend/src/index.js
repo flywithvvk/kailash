@@ -4,6 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import "@/index.css";
 import App from "@/App";
 
+// Initialize Firebase
+import "@/lib/firebase";
+
 // Suppress ResizeObserver error in production
 if (process.env.NODE_ENV === 'production') {
   const resizeObserverErr = window.console.error;

@@ -13,6 +13,7 @@ from .core.mongodb import MongoD
 from .core.database import db_manager
 from .core.db_indexes import create_indexes
 from .core.seeder import seed_database
+from .core.firebase import init_firebase
 from .middleware.security import security_middleware
 from .middleware.error_handler import error_handler
 from .api import auth, departments, tasks, ganesha, analytics, ganesha_orchestrator, simple_health, guardians, conversations, rbac, users
@@ -165,6 +166,12 @@ async def lifespan(app: FastAPI):
         # Start background performance monitoring
         asyncio.create_task(performance_monitoring_task())
         logger.info("✅ Performance monitoring started")
+        
+        # Initialize Firebase Admin SDK
+        try:
+            init_firebase()
+        except Exception as fb_err:
+            logger.warning(f"⚠️ Firebase init skipped: {fb_err}")
         
         logger.info("✅ KAILASH started successfully")
         
