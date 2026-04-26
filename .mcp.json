@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "gpdoc": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "c:\\Users\\vivek\\.antigravity\\extensions\\repetere.gpdoc-3.0.0-universal\\out\\mcp-server.js"
+      ]
+    },
+    "github": {
+      "type": "stdio",
+      "command": "gh",
+      "args": ["copilot", "mcp"],
+      "env": {
+        "GITHUB_REPOSITORY": "flywithvvk/kailash"
+      }
+    },
+    "firebase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "firebase-tools", "experiments:enable", "mcp"],
+      "env": {
+        "FIREBASE_PROJECT": "kailash-aegis"
+      }
+    }
+  }
+}

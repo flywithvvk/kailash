@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "kailash-aegis",
+    "production": "kailash-aegis",
+    "staging": "kailash-aegis-staging"
+  }
+}
