@@ -110,7 +110,7 @@ const RefundPolicy = () => {
           <p>Email your refund request to: <strong>connect@go4garage.in</strong></p>
           <p>Include the following information:</p>
           <ul>
-            <li>Account AEGIS Code (<REDACTED_AEGIS_CODE> format)</li>
+            <li>Account AEGIS Code ({'<REDACTED_AEGIS_CODE>'} format)</li>
             <li>Transaction ID or invoice number</li>
             <li>Date of charge</li>
             <li>Amount charged</li>

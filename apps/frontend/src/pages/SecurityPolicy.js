@@ -77,7 +77,7 @@ const SecurityPolicy = () => {
           
           <h3>4.1 User Authentication</h3>
           <ul>
-            <li><strong>AEGIS Code System:</strong> Unique identifier (e.g., <REDACTED_AEGIS_CODE>)</li>
+            <li><strong>AEGIS Code System:</strong> Unique identifier (e.g., {'<REDACTED_AEGIS_CODE>'})</li>
             <li><strong>Password Policy:</strong> Minimum 12 characters, complexity requirements</li>
             <li><strong>Password Hashing:</strong> Bcrypt with salt (14 rounds)</li>
             <li><strong>Session Management:</strong> 60-minute timeout, secure session tokens</li>

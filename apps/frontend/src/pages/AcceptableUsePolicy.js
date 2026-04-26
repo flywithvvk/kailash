@@ -50,7 +50,7 @@ const AcceptableUsePolicy = () => {
             <li>Circumventing authentication or security measures</li>
             <li>Accessing accounts, data, or systems that you are not authorized to access</li>
             <li>Impersonating other users or entities</li>
-            <li>Sharing your authentication credentials (Code <REDACTED_AEGIS_CODE> access must remain confidential)</li>
+            <li>Sharing your authentication credentials (Code {'<REDACTED_AEGIS_CODE>'} access must remain confidential)</li>
             <li>Reverse engineering, decompiling, or disassembling platform components</li>
           </ul>
 
