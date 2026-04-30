@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Check, Shield } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "./UI/button";
 import { toast } from "sonner";
 
 export const TwoFactorModal = ({ isOpen, onClose, onVerify }) => {

@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import { Avatar, AvatarFallback } from "./UI/avatar";
 
 export const Header = () => {
   return (

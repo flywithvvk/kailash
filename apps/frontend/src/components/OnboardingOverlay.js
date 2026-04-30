@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowRight } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "./UI/button";
 
 export const OnboardingOverlay = ({ onComplete }) => {
   return (

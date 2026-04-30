@@ -19,9 +19,9 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # Default admin user for production
 DEFAULT_ADMIN = {
     "id": "2b03875f-bb4a-4330-8c22-0fe45a9969d0",
-    "email": "vivek@kailash.ai",
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
-    "full_name": "Vivek Gupta",
+    "email": "admin@kailash.ai",
+    "aegis_code": "KAILASH001",
+    "full_name": "Kailash Admin",
     "role": "super_admin",
     "department": "Administration",
     "is_admin": True,
@@ -75,17 +75,17 @@ async def seed_database(db):
         if user_count == 0:
             logger.info("Seeding admin user...")
             # Hash the default password
-            DEFAULT_ADMIN["hashed_password"] = pwd_context.hash("<REDACTED_PASSWORD>")
+            DEFAULT_ADMIN["hashed_password"] = pwd_context.hash("Kailash@2026")
             await db.users.insert_one(DEFAULT_ADMIN)
             logger.info(f"Admin user created: {DEFAULT_ADMIN['aegis_code']}")
         else:
             logger.info(f"Users already exist ({user_count} found), skipping user seeding")
             
             # Check if the specific user exists, if not add them
-            existing_user = await db.users.find_one({"aegis_code": "<REDACTED_AEGIS_CODE>"})
+            existing_user = await db.users.find_one({"aegis_code": "KAILASH001"})
             if not existing_user:
                 logger.info("Adding default admin user...")
-                DEFAULT_ADMIN["hashed_password"] = pwd_context.hash("<REDACTED_PASSWORD>")
+                DEFAULT_ADMIN["hashed_password"] = pwd_context.hash("Kailash@2026")
                 await db.users.insert_one(DEFAULT_ADMIN)
                 logger.info(f"Admin user added: {DEFAULT_ADMIN['aegis_code']}")
         

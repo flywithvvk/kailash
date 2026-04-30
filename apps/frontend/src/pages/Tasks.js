@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { CheckSquare, Plus, User, Eye, Edit } from 'lucide-react';
-import Card from '../components/UI/Card';
-import Button from '../components/UI/Button';
-import Badge from '../components/UI/Badge';
+import { Card, CardContent } from '../components/UI/card';
+import { Button } from '../components/UI/button';
+import { Badge } from '../components/UI/badge';
 import './Tasks.css';
 
 const Tasks = () => {

@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { User, Lock, Eye, EyeOff, Shield, Zap, ArrowRight, Check, Loader2 } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { User, Eye, EyeOff, Shield, Zap, ArrowRight, Check, Loader2 } from "lucide-react";
+import { Button } from "./UI/button";
+import { Input } from "./UI/input";
+import { Label } from "./UI/label";
 import { toast } from "sonner";
 
 export const LoginCardOverlay = ({ onLogin, isLoading }) => {
-  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [loginId, setLoginId] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rippleEffect, setRippleEffect] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!credentials.username || !credentials.password) {
-      toast.error("Please enter both AEGIS Code and Decode");
+    if (!loginId) {
+      toast.error("Please enter your Login ID");
       return;
     }
     
@@ -26,19 +26,17 @@ export const LoginCardOverlay = ({ onLogin, isLoading }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          aegis_code: credentials.username,
-          password: credentials.password
+          login_id: loginId
         })
       });
       
       if (response.ok) {
         const data = await response.json();
-        toast.success("Credentials validated! Access granted.");
-        // Pass credentials with token data
-        onLogin({ ...credentials, token: data.access_token, user: data.user });
+        toast.success("Login successful! Access granted.");
+        onLogin({ loginId, token: data.access_token, user: data.user });
       } else {
         const error = await response.json();
-        toast.error(error.detail || "Invalid AEGIS Code or Decode. Access denied.");
+        toast.error(error.detail || "Invalid Login ID. Access denied.");
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -80,51 +78,23 @@ export const LoginCardOverlay = ({ onLogin, isLoading }) => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3">
-          {/* AEGIS Code */}
+          {/* Login ID */}
           <div className="space-y-1">
-            <Label htmlFor="username" className="flex items-center gap-2 text-[#8172AD] font-semibold text-xs">
+            <Label htmlFor="loginId" className="flex items-center gap-2 text-[#8172AD] font-semibold text-xs">
               <User className="w-3.5 h-3.5" strokeWidth={1.5} />
-              AEGIS Code
+              Login ID
             </Label>
             <div className="relative group">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 transition-colors group-focus-within:text-[#8172AD]" strokeWidth={1.5} />
               <Input 
-                id="username" 
+                id="loginId" 
                 type="text" 
-                value={credentials.username} 
-                onChange={(e) => setCredentials({...credentials, username: e.target.value})} 
+                value={loginId} 
+                onChange={(e) => setLoginId(e.target.value)} 
                 className="h-10 pl-10 pr-3 bg-[rgba(30,30,45,0.8)] border border-[rgba(129,114,173,0.3)] text-white placeholder:text-gray-500 focus:border-[#8172AD]" 
                 style={{ borderRadius: '0' }} 
-                placeholder="Enter your code" 
+                placeholder="Enter your login ID" 
               />
-            </div>
-          </div>
-
-          {/* Decode */}
-          <div className="space-y-1">
-            <Label htmlFor="password" className="flex items-center gap-2 text-[#8172AD] font-semibold text-xs">
-              <Lock className="w-3.5 h-3.5" strokeWidth={1.5} />
-              Decode
-            </Label>
-            <div className="relative group">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 transition-colors group-focus-within:text-[#8172AD]" strokeWidth={1.5} />
-              <Input 
-                id="password" 
-                type={showPassword ? "text" : "password"} 
-                value={credentials.password} 
-                onChange={(e) => setCredentials({...credentials, password: e.target.value})} 
-                className="h-10 pl-10 pr-10 bg-[rgba(30,30,45,0.8)] border border-[rgba(129,114,173,0.3)] text-white placeholder:text-gray-500 focus:border-[#8172AD]" 
-                style={{ borderRadius: '0' }} 
-                placeholder="Enter your key" 
-              />
-              <button 
-                type="button" 
-                onClick={() => setShowPassword(!showPassword)} 
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#8172AD] transition-colors"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" strokeWidth={1.5} /> : <Eye className="w-4 h-4" strokeWidth={1.5} />}
-              </button>
             </div>
           </div>
 

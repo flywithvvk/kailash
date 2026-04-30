@@ -33,26 +33,21 @@ export const LoginPage = () => {
   const handleLogin = async (credentials) => {
     setIsLoading(true);
     
-    // Auto-dismiss onboarding overlay if user is logging in
     if (isFirstVisit) {
       localStorage.setItem('aegis_has_visited', 'true');
       setIsFirstVisit(false);
     }
     
-    // Check if we have valid token from API response
     if (credentials.token && credentials.user) {
-      // Check if user has 2FA enabled
       const user = credentials.user;
       const has2FAEnabled = user.two_factor_enabled || user.is_2fa_enabled || false;
       
       if (has2FAEnabled) {
-        // Store token temporarily for 2FA verification
         sessionStorage.setItem('temp_token', credentials.token);
         sessionStorage.setItem('temp_user', JSON.stringify(user));
         setIsLoading(false);
         setShow2FA(true);
       } else {
-        // No 2FA - proceed directly to dashboard
         const authData = {
           'kailash-auth': JSON.stringify({
             state: {
@@ -66,15 +61,13 @@ export const LoginPage = () => {
           })
         };
         
-        // Store auth data
         Object.entries(authData).forEach(([key, value]) => {
           localStorage.setItem(key, value);
         });
         localStorage.setItem('token', credentials.token);
         localStorage.setItem('user', JSON.stringify(user));
         
-        // Set session expiry for timeout feature
-        const expiry = Date.now() + (60 * 60 * 1000); // 60 minutes
+        const expiry = Date.now() + (60 * 60 * 1000);
         localStorage.setItem('sessionExpiry', expiry.toString());
         
         setIsLoading(false);

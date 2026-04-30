@@ -69,59 +69,53 @@ async def register(user_data: UserRegister):
 @router.post("/login", response_model=Token)
 async def login(credentials: UserLogin, request: Request):
     """
-    Login with AEGIS code and password
-    NOW WITH: ailed login tracking and device lockout
+    Login with login_id (aegis_code) and optional password
     """
     try:
-        # Check for device lockout EORE attempting login
+        login_id = credentials.login_id
+        
+        # Check for device lockout BEFORE attempting login
         await security_middleware.check_device_lockout(
-            credentials.aegis_code,
+            login_id,
             request
         )
         
         db = get_db()
         
-        # ind user by AEGIS code
-        user_dict = await db.users.find_one({"aegis_code": credentials.aegis_code})
+        # Find user by aegis_code (login_id)
+        user_dict = await db.users.find_one({"aegis_code": login_id})
         
         if not user_dict:
-            # Record failed attempt
-            security_middleware.record_failed_login(credentials.aegis_code, request)
-            
-            # Log failed authentication
+            security_middleware.record_failed_login(login_id, request)
             error_handler.log_authentication(
-                credentials.aegis_code,
+                login_id,
                 request.client.host if request.client else "unknown",
                 False,
                 security_middleware.get_device_fingerprint(request)
             )
-            
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid AEGIS Code or Password. Access denied.",
-                headers={"WWW-Authenticate": "earer"},
+                detail="Invalid Login ID. Access denied.",
+                headers={"WWW-Authenticate": "Bearer"},
             )
         
         user = User(**user_dict)
         
-        # Verify password
-        if not verify_password(credentials.password, user.hashed_password):
-            # Record failed attempt
-            security_middleware.record_failed_login(credentials.aegis_code, request)
-            
-            # Log failed authentication
-            error_handler.log_authentication(
-                credentials.aegis_code,
-                request.client.host if request.client else "unknown",
-                False,
-                security_middleware.get_device_fingerprint(request)
-            )
-            
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid AEGIS Code or Password. Access denied.",
-                headers={"WWW-Authenticate": "earer"},
-            )
+        # Verify password if provided
+        if credentials.password:
+            if not verify_password(credentials.password, user.hashed_password):
+                security_middleware.record_failed_login(login_id, request)
+                error_handler.log_authentication(
+                    login_id,
+                    request.client.host if request.client else "unknown",
+                    False,
+                    security_middleware.get_device_fingerprint(request)
+                )
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid Login ID or Password. Access denied.",
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
         
         # Check if user is active
         if not user.is_active:
@@ -134,13 +128,11 @@ async def login(credentials: UserLogin, request: Request):
         if user_dict.get('is_temporary') and user_dict.get('expires_at'):
             from datetime import datetime, timezone
             expires_at = user_dict.get('expires_at')
-            # Handle both timezone-aware and naive datetimes
             if expires_at.tzinfo is None:
                 expires_at = expires_at.replace(tzinfo=timezone.utc)
             if datetime.now(timezone.utc) > expires_at:
-                # Disable the user
                 await db.users.update_one(
-                    {"aegis_code": credentials.aegis_code},
+                    {"aegis_code": login_id},
                     {"$set": {"is_active": False}}
                 )
                 raise HTTPException(
@@ -150,11 +142,11 @@ async def login(credentials: UserLogin, request: Request):
                 )
         
         # Clear failed attempts on successful login
-        security_middleware.clear_failed_logins(credentials.aegis_code, request)
+        security_middleware.clear_failed_logins(login_id, request)
         
         # Log successful authentication
         error_handler.log_authentication(
-            credentials.aegis_code,
+            login_id,
             request.client.host if request.client else "unknown",
             True,
             security_middleware.get_device_fingerprint(request)

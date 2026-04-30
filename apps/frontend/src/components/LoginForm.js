@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { User, Lock, Shield, Check, Zap, ArrowRight, Loader2 } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Button } from "./UI/button";
+import { Input } from "./UI/input";
+import { Label } from "./UI/label";
 import { toast } from "sonner";
 
 export const LoginForm = ({ onLogin, isLoading }) => {

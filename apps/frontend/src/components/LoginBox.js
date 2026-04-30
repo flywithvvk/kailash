@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, Shield } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Checkbox } from "./ui/checkbox";
+import { Button } from "./UI/button";
+import { Input } from "./UI/input";
+import { Label } from "./UI/label";
+import { Checkbox } from "./UI/checkbox";
 import { toast } from "sonner";
 
 export const LoginBox = ({ onLogin, isLoading }) => {

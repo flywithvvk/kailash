@@ -1,0 +1,124 @@
+2026-04-30 10:51:04,736 | WARNING  | kailash.email | Email service not configured. SMTP_USERNAME or SMTP_PASSWORD missing.
+2026-04-30 10:53:42,557 | WARNING  | kailash.email | Email service not configured. SMTP_USERNAME or SMTP_PASSWORD missing.
+2026-04-30 10:55:56,241 | WARNING  | kailash.email | Email service not configured. SMTP_USERNAME or SMTP_PASSWORD missing.
+2026-04-30 10:58:09,783 | WARNING  | kailash.email | Email service not configured. SMTP_USERNAME or SMTP_PASSWORD missing.
+2026-04-30 11:00:16,638 | WARNING  | kailash.email | Email service not configured. SMTP_USERNAME or SMTP_PASSWORD missing.
+2026-04-30 11:03:44,683 | WARNING  | kailash.email | Email service not configured. SMTP_USERNAME or SMTP_PASSWORD missing.
+2026-04-30 11:04:44,830 | WARNING  | kailash.email | Email service not configured. SMTP_USERNAME or SMTP_PASSWORD missing.
+2026-04-30 11:05:08,106 | INFO     | kailash |  Starting KAILASH AEGIS HU...
+2026-04-30 11:05:08,107 | INFO     | kailash | Environment: Production | Domain: kailash-ai.in
+2026-04-30 11:05:08,108 | INFO     | kailash | Company: Go4Garage - URGAA EV Charging
+2026-04-30 11:05:08,108 | INFO     | kailash | Connecting to MongoDB...
+2026-04-30 11:05:08,109 | INFO     | kailash | MongoDB URL: mongodb://localhost:27017...
+2026-04-30 11:05:08,110 | INFO     | kailash | Using database: kailash_aegis
+2026-04-30 11:05:10,519 | INFO     | kailash.seeder | Users already exist (1 found), skipping user seeding
+2026-04-30 11:05:10,550 | INFO     | kailash.seeder | Departments already exist (27 found), checking for missing departments...
+2026-04-30 11:05:10,609 | INFO     | kailash.seeder | All departments already exist
+2026-04-30 11:05:10,644 | INFO     | kailash.seeder | Database indexes created
+2026-04-30 11:05:11,132 | INFO     | kailash | [OK] Created 4 indexes on tasks collection
+2026-04-30 11:05:11,239 | INFO     | kailash | [OK] Created 3 indexes on ganesha_commands collection
+2026-04-30 11:05:11,322 | INFO     | kailash | [OK] Created 2 indexes on activities collection
+2026-04-30 11:05:11,450 | INFO     | kailash | [OK] Created 2 indexes on departments collection
+2026-04-30 11:05:11,462 | INFO     | kailash | [OK] Created 2 indexes on users collection
+2026-04-30 11:05:11,463 | INFO     | kailash | [OK] Database index creation completed (Atlas may manage indexes automatically)
+2026-04-30 11:05:11,530 | INFO     | kailash | MongoDB connected
+2026-04-30 11:05:11,634 | INFO     | kailash.firebase | Firebase: disabled via FIREBASE_DISABLED env var
+2026-04-30 11:05:11,727 | WARNING  | kailash.performance | High resource usage - Memory: 85.0%, CPU: 87.5%
+2026-04-30 11:05:34,530 | INFO     | kailash | GET /api/health | Status: 200 | Time: 0.014s | IP: 127.0.0.1
+2026-04-30 11:05:48,280 | INFO     | kailash | POST /api/auth/login | Status: 422 | Time: 0.117s | IP: 127.0.0.1
+2026-04-30 11:06:04,862 | INFO     | kailash | POST /api/auth/login | Status: 422 | Time: 0.013s | IP: 127.0.0.1
+2026-04-30 11:06:11,761 | WARNING  | kailash.performance | High memory usage: 86.6% - triggering GC
+2026-04-30 11:06:12,148 | WARNING  | kailash.performance | High resource usage - Memory: 86.6%, CPU: 92.1%
+2026-04-30 11:06:26,028 | INFO     | kailash.security | Cleared failed login attempts for KAILASH001
+2026-04-30 11:06:26,029 | ERROR    | kailash.auth | Login error: 'UserLogin' object has no attribute 'aegis_code'
+2026-04-30 11:06:26,032 | INFO     | kailash | POST /api/auth/login | Status: 500 | Time: 0.206s | IP: 127.0.0.1
+2026-04-30 11:07:12,184 | WARNING  | kailash.performance | High memory usage: 87.9% - triggering GC
+2026-04-30 11:07:12,484 | WARNING  | kailash.performance | High resource usage - Memory: 87.9%, CPU: 98.0%
+2026-04-30 11:08:12,494 | WARNING  | kailash.performance | High memory usage: 86.8% - triggering GC
+2026-04-30 11:08:12,934 | WARNING  | kailash.performance | High resource usage - Memory: 86.8%, CPU: 95.9%
+2026-04-30 11:09:12,960 | WARNING  | kailash.performance | High memory usage: 86.4% - triggering GC
+2026-04-30 11:09:13,318 | WARNING  | kailash.performance | High resource usage - Memory: 86.4%, CPU: 97.1%
+2026-04-30 11:09:26,858 | WARNING  | kailash.email | Email service not configured. SMTP_USERNAME or SMTP_PASSWORD missing.
+2026-04-30 11:09:35,070 | INFO     | kailash |  Starting KAILASH AEGIS HU...
+2026-04-30 11:09:35,071 | INFO     | kailash | Environment: Production | Domain: kailash-ai.in
+2026-04-30 11:09:35,071 | INFO     | kailash | Company: Go4Garage - URGAA EV Charging
+2026-04-30 11:09:35,072 | INFO     | kailash | Connecting to MongoDB...
+2026-04-30 11:09:35,073 | INFO     | kailash | MongoDB URL: mongodb://localhost:27017...
+2026-04-30 11:09:35,074 | INFO     | kailash | Using database: kailash_aegis
+2026-04-30 11:09:35,263 | INFO     | kailash.seeder | Users already exist (1 found), skipping user seeding
+2026-04-30 11:09:35,274 | INFO     | kailash.seeder | Departments already exist (27 found), checking for missing departments...
+2026-04-30 11:09:35,281 | INFO     | kailash.seeder | All departments already exist
+2026-04-30 11:09:35,297 | INFO     | kailash.seeder | Database indexes created
+2026-04-30 11:09:35,485 | INFO     | kailash | [OK] Created 4 indexes on tasks collection
+2026-04-30 11:09:35,502 | INFO     | kailash | [OK] Created 3 indexes on ganesha_commands collection
+2026-04-30 11:09:35,514 | INFO     | kailash | [OK] Created 2 indexes on activities collection
+2026-04-30 11:09:35,527 | INFO     | kailash | [OK] Created 2 indexes on departments collection
+2026-04-30 11:09:35,540 | INFO     | kailash | [OK] Created 2 indexes on users collection
+2026-04-30 11:09:35,541 | INFO     | kailash | [OK] Database index creation completed (Atlas may manage indexes automatically)
+2026-04-30 11:09:35,598 | INFO     | kailash | MongoDB connected
+2026-04-30 11:09:35,703 | INFO     | kailash.firebase | Firebase: disabled via FIREBASE_DISABLED env var
+2026-04-30 11:09:35,785 | WARNING  | kailash.performance | High memory usage: 87.3% - triggering GC
+2026-04-30 11:09:35,976 | WARNING  | kailash.performance | High resource usage - Memory: 87.3%, CPU: 56.3%
+2026-04-30 11:10:26,762 | INFO     | kailash.security | Cleared failed login attempts for KAILASH001
+2026-04-30 11:10:26,763 | INFO     | kailash | AUTH SUCCESS: KAILASH001 from 127.0.0.1 | Device: 070a1fe9d4eee2e6
+2026-04-30 11:10:26,795 | INFO     | kailash | POST /api/auth/login | Status: 200 | Time: 0.130s | IP: 127.0.0.1
+2026-04-30 11:10:35,982 | WARNING  | kailash.performance | High memory usage: 86.4% - triggering GC
+2026-04-30 11:10:36,189 | WARNING  | kailash.performance | High resource usage - Memory: 86.4%, CPU: 50.5%
+2026-04-30 11:10:40,206 | INFO     | kailash.security | Cleared failed login attempts for KAILASH001
+2026-04-30 11:10:40,209 | INFO     | kailash | AUTH SUCCESS: KAILASH001 from 127.0.0.1 | Device: 070a1fe9d4eee2e6
+2026-04-30 11:10:40,215 | INFO     | kailash | POST /api/auth/login | Status: 200 | Time: 0.055s | IP: 127.0.0.1
+2026-04-30 11:11:36,194 | WARNING  | kailash.performance | High memory usage: 87.4% - triggering GC
+2026-04-30 11:11:36,425 | WARNING  | kailash.performance | High resource usage - Memory: 87.4%, CPU: 63.8%
+2026-04-30 11:12:36,437 | WARNING  | kailash.performance | High resource usage - Memory: 84.0%, CPU: 57.1%
+2026-04-30 11:13:36,459 | WARNING  | kailash.performance | High resource usage - Memory: 83.7%, CPU: 36.5%
+2026-04-30 11:16:36,491 | WARNING  | kailash.performance | High memory usage: 86.5% - triggering GC
+2026-04-30 11:16:36,700 | WARNING  | kailash.performance | High resource usage - Memory: 86.5%, CPU: 42.4%
+2026-04-30 11:17:36,719 | WARNING  | kailash.performance | High memory usage: 88.6% - triggering GC
+2026-04-30 11:17:36,957 | WARNING  | kailash.performance | High resource usage - Memory: 88.6%, CPU: 74.0%
+2026-04-30 11:18:36,967 | WARNING  | kailash.performance | High memory usage: 86.7% - triggering GC
+2026-04-30 11:18:37,201 | WARNING  | kailash.performance | High resource usage - Memory: 86.7%, CPU: 74.2%
+2026-04-30 11:19:37,207 | WARNING  | kailash.performance | High memory usage: 86.3% - triggering GC
+2026-04-30 11:19:37,441 | WARNING  | kailash.performance | High resource usage - Memory: 86.3%, CPU: 72.0%
+2026-04-30 11:20:37,456 | WARNING  | kailash.performance | High resource usage - Memory: 81.7%, CPU: 73.1%
+2026-04-30 11:21:37,472 | WARNING  | kailash.performance | High memory usage: 86.8% - triggering GC
+2026-04-30 11:21:37,729 | WARNING  | kailash.performance | High resource usage - Memory: 86.8%, CPU: 81.6%
+2026-04-30 11:22:37,742 | WARNING  | kailash.performance | High memory usage: 88.1% - triggering GC
+2026-04-30 11:22:37,973 | WARNING  | kailash.performance | High resource usage - Memory: 88.1%, CPU: 76.3%
+2026-04-30 11:23:37,981 | WARNING  | kailash.performance | High memory usage: 90.4% - triggering GC
+2026-04-30 11:23:38,249 | WARNING  | kailash.performance | High resource usage - Memory: 90.4%, CPU: 79.1%
+2026-04-30 11:24:38,253 | WARNING  | kailash.performance | High memory usage: 90.8% - triggering GC
+2026-04-30 11:24:38,533 | WARNING  | kailash.performance | High resource usage - Memory: 90.8%, CPU: 79.7%
+2026-04-30 11:25:38,553 | WARNING  | kailash.performance | High memory usage: 90.2% - triggering GC
+2026-04-30 11:25:38,781 | WARNING  | kailash.performance | High resource usage - Memory: 90.2%, CPU: 74.5%
+2026-04-30 11:26:38,784 | WARNING  | kailash.performance | High memory usage: 94.1% - triggering GC
+2026-04-30 11:26:38,991 | WARNING  | kailash.performance | High resource usage - Memory: 94.1%, CPU: 77.8%
+2026-04-30 11:27:38,995 | WARNING  | kailash.performance | High memory usage: 94.3% - triggering GC
+2026-04-30 11:27:39,213 | WARNING  | kailash.performance | High resource usage - Memory: 94.3%, CPU: 51.4%
+2026-04-30 11:28:39,226 | WARNING  | kailash.performance | High memory usage: 93.8% - triggering GC
+2026-04-30 11:28:39,452 | WARNING  | kailash.performance | High resource usage - Memory: 93.8%, CPU: 69.7%
+2026-04-30 11:29:39,468 | WARNING  | kailash.performance | High memory usage: 92.9% - triggering GC
+2026-04-30 11:29:39,756 | WARNING  | kailash.performance | High resource usage - Memory: 92.9%, CPU: 84.7%
+2026-04-30 11:30:39,771 | WARNING  | kailash.performance | High memory usage: 89.1% - triggering GC
+2026-04-30 11:30:40,038 | WARNING  | kailash.performance | High resource usage - Memory: 89.1%, CPU: 53.5%
+2026-04-30 11:31:40,050 | WARNING  | kailash.performance | High memory usage: 90.8% - triggering GC
+2026-04-30 11:31:40,344 | WARNING  | kailash.performance | High resource usage - Memory: 90.8%, CPU: 69.5%
+2026-04-30 11:32:40,355 | WARNING  | kailash.performance | High memory usage: 88.2% - triggering GC
+2026-04-30 11:32:40,603 | WARNING  | kailash.performance | High resource usage - Memory: 88.2%, CPU: 80.4%
+2026-04-30 11:33:40,613 | WARNING  | kailash.performance | High memory usage: 88.8% - triggering GC
+2026-04-30 11:33:40,832 | WARNING  | kailash.performance | High resource usage - Memory: 88.8%, CPU: 72.5%
+2026-04-30 11:34:40,836 | WARNING  | kailash.performance | High memory usage: 90.7% - triggering GC
+2026-04-30 11:34:41,134 | WARNING  | kailash.performance | High resource usage - Memory: 90.7%, CPU: 82.1%
+2026-04-30 11:35:41,171 | WARNING  | kailash.performance | High memory usage: 93.6% - triggering GC
+2026-04-30 11:35:41,941 | WARNING  | kailash.performance | High resource usage - Memory: 93.6%, CPU: 82.7%
+2026-04-30 11:36:41,967 | WARNING  | kailash.performance | High memory usage: 96.1% - triggering GC
+2026-04-30 11:36:42,262 | WARNING  | kailash.performance | High resource usage - Memory: 96.1%, CPU: 94.0%
+2026-04-30 11:37:42,282 | WARNING  | kailash.performance | High memory usage: 94.3% - triggering GC
+2026-04-30 11:37:42,817 | WARNING  | kailash.performance | High resource usage - Memory: 94.3%, CPU: 92.4%
+2026-04-30 11:38:42,898 | WARNING  | kailash.performance | High memory usage: 94.2% - triggering GC
+2026-04-30 11:38:43,341 | WARNING  | kailash.performance | High resource usage - Memory: 94.2%, CPU: 98.7%
+2026-04-30 11:39:43,428 | WARNING  | kailash.performance | High memory usage: 87.3% - triggering GC
+2026-04-30 11:39:43,755 | WARNING  | kailash.performance | High resource usage - Memory: 87.3%, CPU: 94.1%
+2026-04-30 11:40:43,769 | WARNING  | kailash.performance | High memory usage: 85.7% - triggering GC
+2026-04-30 11:40:43,990 | WARNING  | kailash.performance | High resource usage - Memory: 85.7%, CPU: 89.4%
+2026-04-30 11:41:44,009 | WARNING  | kailash.performance | High memory usage: 87.4% - triggering GC
+2026-04-30 11:41:44,356 | WARNING  | kailash.performance | High resource usage - Memory: 87.4%, CPU: 67.4%

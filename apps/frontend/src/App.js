@@ -3,8 +3,6 @@ import { ToastProvider } from "./context/ToastContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 // ApplicationsHub REMOVED - KAILASH IS the operating system
-import KailashDashboard from "./pages/KailashDashboard";
-import NewKailashDashboard from "./pages/NewKailashDashboard";
 import SpiritualKailashDashboard from "./pages/SpiritualKailashDashboard";
 import GSTWebsite from "./pages/GSTWebsite";
 import TattoosTool from "./pages/TattoosTool";
@@ -289,13 +287,6 @@ function App() {
         </Layout>
         </ToastProvider>
       </BrowserRouter>
-      <Toaster />
-    </div>
-    </ErrorBoundary>
-  );
-}
-
-export default App;uter>
       <Toaster />
     </div>
     </ErrorBoundary>

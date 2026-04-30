@@ -18,14 +18,14 @@ class UserRegister(BaseModel):
         }
 
 class UserLogin(BaseModel):
-    aegis_code: str
-    password: str
+    login_id: str
+    password: Optional[str] = None
     
     class Config:
         json_schema_extra = {
             "example": {
-                "aegis_code": "<REDACTED_AEGIS_CODE>",
-                "password": "<REDACTED_PASSWORD>"
+                "login_id": "KAILASH001",
+                "password": "Kailash@2026"
             }
         }
 

@@ -1,4 +1,4 @@
-import { Badge } from "./ui/badge";
+import { Badge } from "./UI/badge";
 
 export const ProgramTile = ({ icon: Icon, name, badge, description }) => {
   return (
