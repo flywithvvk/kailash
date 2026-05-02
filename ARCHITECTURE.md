@@ -1,46 +1,38 @@
 # Architecture
 
-This is the top-level map of the KAILASH-AI monorepo. The full design
+This is the top-level map of the Kailash monorepo. The full design
 document — capability matrix, data flows, service contracts, and the
 Automobile-LLM moat strategy — lives in
 [`docs/architecture/platform-overview.md`](docs/architecture/platform-overview.md).
 
 ## System topology
 
-```mermaid
-flowchart LR
-  subgraph Consumers["Consumer Products"]
-    URGAA[URGAA]
-    GST[GSTSAAS]
-    IGN[Ignition]
-    ARJ[ARJUN]
-    AEGIS[AEGIS Hub]
-  end
-
-  GW["platform/gateway :8100<br/>X-Platform-Token · x-request-id"]
-
-  subgraph Services["KAILASH-AI Services (FastAPI)"]
-    DOC[document-ai :8101]
-    FC[forecasting :8102]
-    AN[anomaly :8103]
-    RAG[rag :8104]
-    VG[vision-gateway :8105]
-    SP[speech :8106]
-    MR[model-registry :8107]
-    KG[knowledge-graph :8108]
-    LLM[automobile-llm :8109]
-  end
-
-  subgraph Shared["platform/kailash_shared"]
-    APPF[build_app factory]
-    AUTH[require_internal_token]
-    SCHEMA[ApiResponse / HealthResponse]
-    ERR[PlatformError hierarchy]
-    LOG[structured JSON logging]
-  end
-
-  Consumers --> GW --> Services
-  Services -.uses.-> Shared
+```
+Consumer Products (URGAA, GSTSAAS, Ignition, ARJUN, Kailash Dashboard)
+                         │
+                         ▼
+              Kailash Backend (FastAPI)
+              ┌──────────────────────────────────────┐
+              │  Main App                            │
+              │  24 AI Departments · Auth · RBAC     │
+              │  GANESHA Orchestrator                │
+              │  SHIV Security · PARVATI Workload    │
+              ├──────────────────────────────────────┤
+              │  Platform Services (internal modules) │
+              │  document-ai · forecasting · anomaly │
+              │  rag · vision-gateway · speech       │
+              │  model-registry · knowledge-graph    │
+              │  automobile-llm                      │
+              ├──────────────────────────────────────┤
+              │  Shared Library                      │
+              │  schemas · auth · errors · logging   │
+              │  build_app() factory                 │
+              └──────────────────────────────────────┘
+                         │
+              ┌──────────┴──────────┐
+              ▼                     ▼
+    MongoDB · PostgreSQL         Kailash Frontend
+    Redis                       (React 19)
 ```
 
 ## Request lifecycle
@@ -48,23 +40,60 @@ flowchart LR
 ```mermaid
 sequenceDiagram
   autonumber
-  participant C as Consumer (e.g. AEGIS Hub)
-  participant G as platform/gateway :8100
-  participant S as Service (e.g. rag :8104)
-  participant P as OpenRouter / upstream
+  participant F as Frontend (React)
+  participant B as Kailash Backend
+  participant DB as MongoDB / Postgres
+  participant AI as OpenRouter / Upstream
 
-  C->>G: POST /rag/embed<br/>X-Platform-Token, x-request-id
-  G->>S: POST /embed (headers forwarded)
-  S->>S: require_internal_token
-  S->>P: embeddings API (if configured)
-  P-->>S: vectors
-  S-->>G: ApiResponse envelope + x-request-id
-  G-->>C: 200 OK
+  F->>B: POST /api/ganesha/chat<br/>Authorization: Bearer JWT
+  B->>B: Validate JWT · RBAC check · rate limit
+  B->>DB: Fetch department context
+  DB-->>B: Department data
+  B->>AI: Chat completion request
+  AI-->>B: Response
+  B-->>F: 200 OK · ApiResponse envelope · x-request-id
 ```
 
-## Shared library (`platform/kailash_shared`)
+## Backend structure
 
-Every service is built on the same foundation:
+```
+backend/
+├── app/                    # Main FastAPI application
+│   ├── main.py             # App entry point, lifecycle, middleware
+│   ├── core/               # Config, database, MongoDB, Firebase, RBAC
+│   ├── api/                # 20+ REST API routers
+│   ├── models/             # User, Department, Task, Activity models
+│   ├── services/           # Email, GANESHA AI, orchestrator, RAG
+│   ├── departments/        # 24 deity-themed AI departments
+│   ├── guardians/          # GANESHA, SHIV, PARVATI agents
+│   ├── middleware/         # Security headers, error handling
+│   └── agents/             # Multi-model strategy, prompts
+├── services/               # 9 platform AI services (internal modules)
+│   ├── document-ai/        # PDF extraction, field validation
+│   ├── forecasting/        # EMA + trend + seasonal baseline
+│   ├── anomaly/            # IsolationForest anomaly detection
+│   ├── rag/                # Embeddings + cosine similarity store
+│   ├── vision-gateway/     # Tiered vision model routing
+│   ├── speech/             # ASR + TTS with Indic locales
+│   ├── model-registry/     # MLflow-shaped model registry
+│   ├── knowledge-graph/    # Typed graph with BFS lookup
+│   └── automobile-llm/     # Domain-pinned chat (the moat)
+├── shared/                 # Shared library
+│   ├── app.py              # FastAPI build_app() factory
+│   ├── auth.py             # require_internal_token dependency
+│   ├── schemas.py          # ApiResponse, HealthResponse envelopes
+│   ├── errors.py           # PlatformError hierarchy
+│   ├── config.py           # BaseServiceSettings
+│   └── logging.py          # Structured JSON logging
+├── knowledge/              # Department knowledge base data
+├── tests/                  # Backend tests
+├── requirements.txt        # Python dependencies
+└── server.py               # Uvicorn entry point
+```
+
+## Shared library (`backend/shared/`)
+
+Every module uses the same foundation:
 
 - `build_app(settings, routers=...)` — FastAPI factory that wires CORS,
   request-id middleware, `/health`, `/`, `/metrics`, and the typed
@@ -78,16 +107,15 @@ Every service is built on the same foundation:
 - `NotFoundError` / `ValidationError` / `UpstreamError` — typed errors
   that map to stable `code` strings in the response.
 - Structured JSON logging with a `service` field injected via
-  `logging.Filter` (idempotent across multiple apps in the same process).
+  `logging.Filter`.
 
 ## Deployment shape
 
-- **Local** — `docker compose -f deploy/docker/docker-compose.platform.yml up`.
-  Every service's Dockerfile uses the repo root as build context so it can
-  `COPY platform /opt/platform && pip install /opt/platform`.
+- **Local** — `docker compose up -d --build`. Single container with
+  MongoDB, PostgreSQL, and Redis alongside.
 - **CI** — `.github/workflows/ci.yml` runs a 6-job matrix: lint, shared,
   services (9-way), backend, frontend, compose-build.
-- **Prod** — the same images behind an internet-facing reverse proxy
-  (TLS + WAF) with the gateway as the only public ingress. Inter-service
-  traffic stays on a private network; `X-Platform-Token` is a
-  defence-in-depth layer.
+- **Prod** — Docker Compose on Vultr VPS behind Nginx reverse proxy with
+  Let's Encrypt SSL. Health check endpoint monitored.
+- **Firebase** — Frontend deployed to Firebase Hosting with CI/CD
+  auto-deploy on push to main.

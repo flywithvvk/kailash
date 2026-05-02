@@ -15,7 +15,7 @@ ACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 
 # Test credentials
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 
@@ -228,7 +228,7 @@ class inalTester:
                             f"Rate limiting issues: only {success_count}/ requests succeeded")
             
             # Test failed login lockout
-            wrong_creds = {"aegis_code": "WRONG3", "password": "wrongpass"}
+            wrong_creds = {"kailash_code": "WRONG3", "password": "wrongpass"}
             failed_attempts = 
             for i in range():
                 try:
@@ -373,7 +373,7 @@ class inalTester:
         print("Target: % pass rate (/ tests)")
         print("=" * )
         print(f"Testing ackend URL: {ACKEND_URL}")
-        print(f"Test Credentials: AEGIS Code {TEST_CREDENTIALS['aegis_code']}")
+        print(f"Test Credentials: Kailash Code {TEST_CREDENTIALS['kailash_code']}")
         print()
         
         # Authenticate first

@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/frontend/**'
+      - 'frontend/**'
   workflow_dispatch:
     inputs:
       environment:
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: apps/frontend
+        working-directory: frontend
 
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: '20'
           cache: yarn
-          cache-dependency-path: apps/frontend/yarn.lock
+          cache-dependency-path: frontend/yarn.lock
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile || yarn install
@@ -42,7 +42,7 @@ jobs:
           REACT_APP_BACKEND_URL: ${{ vars.BACKEND_URL || 'https://api.kailash-ai.in' }}
           REACT_APP_ENV: production
           REACT_APP_DOMAIN: kailash-ai.in
-          REACT_APP_APP_NAME: KAILASH AEGIS HUB
+          REACT_APP_APP_NAME: Kailash
           GENERATE_SOURCEMAP: 'false'
           CI: false
 
@@ -53,4 +53,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           channelId: live
           projectId: kailash-38268
-          entryPoint: apps/frontend
+          entryPoint: frontend

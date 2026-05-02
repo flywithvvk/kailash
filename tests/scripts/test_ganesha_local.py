@@ -9,7 +9,7 @@ import time
 # Local backend URL
 ACKEND_URL = "http://localhost:8/api"
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 

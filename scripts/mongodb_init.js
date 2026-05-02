@@ -1,14 +1,14 @@
-// MongoDB Initialization Script for AEGIS HUB - KAILASH AI
+// MongoDB Initialization Script for Kailash - KAILASH AI
 // This script sets up the database with all required collections, indexes, and initial data
 
 print("=================================================");
-print("AEGIS HUB - MongoDB Initialization Script");
-print("Database: kailash_aegis");
+print("Kailash - MongoDB Initialization Script");
+print("Database: kailash");
 print("=================================================");
 print("");
 
 // Switch to the application database
-db = db.getSiblingDB('kailash_aegis');
+db = db.getSiblingDB('kailash');
 
 // Function to create collection if it doesn't exist
 function ensureCollection(collectionName) {
@@ -60,7 +60,7 @@ print("-------------------------");
 // Users collection indexes
 print("Collection: users");
 ensureIndex('users', { email: 1 }, { unique: true, name: "email_1" });
-ensureIndex('users', { aegis_code: 1 }, { unique: true, name: "aegis_code_1" });
+ensureIndex('users', { kailash_code: 1 }, { unique: true, name: "kailash_code_1" });
 ensureIndex('users', { is_active: 1 }, { name: "is_active_1" });
 ensureIndex('users', { role: 1 }, { name: "role_1" });
 

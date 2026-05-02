@@ -1,52 +1,39 @@
-# KAILASH-AI developer Makefile
-# Works on Linux/macOS and Windows (Git Bash / WSL).
+# Kailash developer Makefile
 
 PY ?= python
-SERVICES := document-ai forecasting anomaly rag vision-gateway speech model-registry knowledge-graph automobile-llm
-COMPOSE := docker compose -f deploy/docker/docker-compose.platform.yml
+PLATFORM_SERVICES := document-ai forecasting anomaly rag vision-gateway speech model-registry knowledge-graph automobile-llm
+COMPOSE := docker compose -f docker-compose.yml
 
-.PHONY: help install install-shared install-services test test-shared test-services lint fmt up down logs ps clean
+.PHONY: help install test test-platform lint fmt up down logs ps clean
 
 help:
 	@echo "Targets:"
-	@echo "  install           create venv and install platform + all services"
-	@echo "  install-shared    install kailash_shared into current python"
-	@echo "  install-services  install each service requirements.txt"
-	@echo "  test              run all tests (shared + each service)"
-	@echo "  lint              ruff check on services + platform"
-	@echo "  fmt               ruff format"
-	@echo "  up / down / logs  docker compose for the full platform"
+	@echo "  install          install backend requirements"
+	@echo "  test             run backend tests"
+	@echo "  test-platform    run platform service tests"
+	@echo "  lint             ruff check"
+	@echo "  fmt              ruff format"
+	@echo "  up / down / logs docker compose"
 
-install: install-shared install-services
-
-install-shared:
-	$(PY) -m pip install -e platform
+install:
+	$(PY) -m pip install -r backend/requirements.txt
 	$(PY) -m pip install pytest httpx
 
-install-services:
-	@for s in $(SERVICES); do \
-		echo "[install] $$s"; \
-		$(PY) -m pip install -r services/$$s/requirements.txt; \
-	done
-	$(PY) -m pip install python-multipart
+test:
+	$(PY) -m pytest -q tests/
 
-test: test-shared test-services
-
-test-shared:
-	$(PY) -m pytest -q tests/platform
-
-test-services:
-	@for s in $(SERVICES); do \
+test-platform:
+	@for s in $(PLATFORM_SERVICES); do \
 		echo "::group::$$s"; \
-		( cd services/$$s && $(PY) -m pytest -q ) || exit $$?; \
+		( cd backend/services/$$s && $(PY) -m pytest -q ) || exit $$?; \
 		echo "::endgroup::"; \
 	done
 
 lint:
-	$(PY) -m ruff check platform services
+	$(PY) -m ruff check backend
 
 fmt:
-	$(PY) -m ruff format platform services
+	$(PY) -m ruff format backend
 
 up:
 	$(COMPOSE) up -d --build

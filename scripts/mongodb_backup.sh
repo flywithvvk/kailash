@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# MongoDB Backup Script for AEGIS HUB - KAILASH AI
+# MongoDB Backup Script for Kailash - KAILASH AI
 # This script creates a complete backup of the database
 
 BACKUP_DIR="/app/backups/mongodb"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-BACKUP_NAME="kailash_aegis_backup_$TIMESTAMP"
-DATABASE="kailash_aegis"
+BACKUP_NAME="kailash_backup_$TIMESTAMP"
+DATABASE="kailash"
 
 echo "=================================================="
-echo "AEGIS HUB - MongoDB Backup Script"
+echo "Kailash - MongoDB Backup Script"
 echo "=================================================="
 echo ""
 echo "Database: $DATABASE"

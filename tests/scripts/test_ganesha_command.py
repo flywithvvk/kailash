@@ -9,7 +9,7 @@ import time
 # ackend URL and credentials
 ACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 

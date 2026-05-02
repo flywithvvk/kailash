@@ -1,7 +1,7 @@
-# Contributing to KAILASH AEGIS Hub
+# Contributing to Kailash
 
-Thank you for helping improve KAILASH. This document describes the workflow,
-conventions, and tooling expectations for contributors.
+This document describes the workflow, conventions, and tooling expectations
+for contributors.
 
 ## Branching Model
 
@@ -36,27 +36,31 @@ Examples:
 1. Open a PR against `main`.
 2. Link the tracking issue if one exists.
 3. Ensure the PR title follows Conventional Commits.
-4. Ensure `pytest tests/backend` and `yarn test` pass locally.
+4. Ensure tests pass: `make test` and `cd frontend && yarn build`.
 5. Request at least one reviewer from the code owners.
 6. Squash-merge once approved and CI is green.
 
 ## Local Tooling
 
-### Python (backend, tests, tools)
+### Python (backend, tests)
+
 - Python 3.11+
-- `pip install -r apps/backend/requirements.txt`
-- Run tests: `pytest tests/backend`
+- `pip install -r backend/requirements.txt`
+- Run tests: `make test`
 
 ### JavaScript (frontend)
+
 - Node.js 18+, Yarn 1.x
-- `cd apps/frontend && yarn install`
-- Run tests: `yarn test`
+- `cd frontend && yarn install`
+- Build: `yarn build`
 
 ### Pre-flight checklist before pushing
-- [ ] Code compiles / lints clean
+
+- [ ] Code compiles / lints clean (`make lint`)
 - [ ] Tests added or updated
 - [ ] Docs updated if behavior changed
 - [ ] No secrets or credentials committed
+- [ ] Frontend builds cleanly
 
 ## Security
 
@@ -66,13 +70,13 @@ vulnerability, email `security@kailash-ai.in` — do not open a public issue.
 
 ## Code Style
 
-- **Python**: PEP 8, type hints where practical, `black`-compatible formatting.
+- **Python**: PEP 8, type hints where practical. Ruff enforces formatting.
 - **JavaScript/React**: functional components, hooks, Prettier defaults.
 - **Markdown**: one sentence per line is preferred for diff readability.
 
 ## Release
 
 1. Update `CHANGELOG.md` under `## [Unreleased]`.
-2. Bump versions in `apps/backend/app/__init__.py` and `apps/frontend/package.json`.
+2. Bump versions in `backend/app/__init__.py` and `frontend/package.json`.
 3. Tag: `git tag -a vX.Y.Z -m "release: vX.Y.Z"`.
 4. Push tags: `git push --tags`.

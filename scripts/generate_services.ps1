@@ -3,7 +3,7 @@
 #   app/main.py, app/settings.py, app/routes.py, app/service.py, app/__init__.py
 #   tests/test_health.py, tests/test_routes.py, tests/__init__.py
 #   requirements.txt, Dockerfile, README.md, .env.example, pytest.ini
-param([string]$Root = "$env:TEMP\aegis-work\target-repo")
+param([string]$Root = "$env:TEMP\kailash-work\target-repo")
 
 $services = @(
   @{ id="document-ai";     title="Document AI";     port=8101; deps=@("httpx>=0.27","pypdf>=4.2","pillow>=10.0") },

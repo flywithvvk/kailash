@@ -14,7 +14,7 @@ ACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 
 # Test credentials from review request
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 
@@ -31,7 +31,7 @@ class GaneshaOrchestratorTester:
             if response.status_code == :
                 data = response.json()
                 self.auth_token = data["access_token"]
-                print(f"[OK] Authentication successful for {TEST_CREDENTIALS['aegis_code']}")
+                print(f"[OK] Authentication successful for {TEST_CREDENTIALS['kailash_code']}")
                 return True
             else:
                 print(f"[AIL] Authentication failed: {response.status_code}")
@@ -336,7 +336,7 @@ class GaneshaOrchestratorTester:
         print("GANESHA ORCHESTRATOR API TESTING")
         print("=" * 8)
         print(f"ackend URL: {ACKEND_URL}")
-        print(f"Credentials: AEGIS Code {TEST_CREDENTIALS['aegis_code']}, Password: {TEST_CREDENTIALS['password']}")
+        print(f"Credentials: Kailash Code {TEST_CREDENTIALS['kailash_code']}, Password: {TEST_CREDENTIALS['password']}")
         print()
         
         # Authenticate first

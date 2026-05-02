@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-KAILASH AEGIS HUB - Investor Demo Backend API Testing
+Kailash - Investor Demo Backend API Testing
 Tests the newly implemented investor demo features:
 1. GANESHA Multi-Model AI Orchestrator
 2. SHIV Auto-Rectification Engine  
@@ -8,7 +8,7 @@ Tests the newly implemented investor demo features:
 4. Guardian Status APIs
 
 Backend URL: https://ganesha-v2-api.preview.emergentagent.com/api
-Test Credentials: AEGIS Code <REDACTED_AEGIS_CODE>, Password <REDACTED_PASSWORD>
+Test Credentials: Kailash Code <REDACTED_kailash_code>, Password <REDACTED_PASSWORD>
 """
 
 import requests
@@ -24,7 +24,7 @@ BACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 
 # Test credentials from review request
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 
@@ -81,13 +81,13 @@ class InvestorDemoTester:
                     self.auth_token = data["access_token"]
                     user_data = data["user"]
                     self.user_id = user_data.get("id")
-                    if user_data.get("aegis_code") == TEST_CREDENTIALS["aegis_code"]:
+                    if user_data.get("kailash_code") == TEST_CREDENTIALS["kailash_code"]:
                         self.log_test("Authentication Login", True, 
                                     "Login successful with investor demo credentials", 
-                                    {"user_name": user_data.get("full_name"), "aegis_code": user_data.get("aegis_code")})
+                                    {"user_name": user_data.get("full_name"), "kailash_code": user_data.get("kailash_code")})
                     else:
                         self.log_test("Authentication Login", False, 
-                                    "AEGIS code mismatch in response")
+                                    "Kailash code mismatch in response")
                 else:
                     self.log_test("Authentication Login", False, 
                                 "Missing access_token or user in response")
@@ -425,10 +425,10 @@ class InvestorDemoTester:
     
     def run_all_tests(self):
         """Run all investor demo backend tests"""
-        print("🚀 STARTING KAILASH AEGIS HUB INVESTOR DEMO BACKEND TESTING")
+        print("🚀 STARTING Kailash INVESTOR DEMO BACKEND TESTING")
         print("=" * 80)
         print(f"Backend URL: {BACKEND_URL}")
-        print(f"Test Credentials: AEGIS Code {TEST_CREDENTIALS['aegis_code']}")
+        print(f"Test Credentials: Kailash Code {TEST_CREDENTIALS['kailash_code']}")
         print("Testing: GANESHA Multi-Model AI, SHIV Auto-Rectification, Executive Dashboard, Guardian Status")
         print("=" * 80)
         print()
@@ -480,7 +480,7 @@ class InvestorDemoTester:
     def print_final_summary(self):
         """Print final test summary"""
         print("=" * 80)
-        print("🏁 KAILASH AEGIS HUB INVESTOR DEMO TESTING COMPLETED")
+        print("🏁 Kailash INVESTOR DEMO TESTING COMPLETED")
         print("=" * 80)
         
         pass_rate = (self.passed_tests / self.total_tests * 100) if self.total_tests > 0 else 0

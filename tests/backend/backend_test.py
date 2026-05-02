@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-KAILASH AEGIS HUB - DAILY INTELLIGENCE & VOICE API TESTING
+Kailash - DAILY INTELLIGENCE & VOICE API TESTING
 Tests the newly implemented features:
 1. Authentication System (POST /api/auth/login)
 2. Daily Intelligence Collection APIs (POST/GET /api/ganesha/intelligence)
@@ -23,7 +23,7 @@ BACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 
 # Test credentials from review request
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 
@@ -86,7 +86,7 @@ class KailashIntelligenceVoiceTester:
     # ========== 1. AUTHENTICATION SYSTEM ==========
     
     def test_authentication_login(self):
-        """Test POST /api/auth/login with AEGIS Code: <REDACTED_AEGIS_CODE> and Password: <REDACTED_PASSWORD>"""
+        """Test POST /api/auth/login with Kailash Code: <REDACTED_kailash_code> and Password: <REDACTED_PASSWORD>"""
         try:
             response = requests.post(f"{BACKEND_URL}/auth/login", 
                                    json=TEST_CREDENTIALS, timeout=15)
@@ -97,13 +97,13 @@ class KailashIntelligenceVoiceTester:
                     self.auth_token = data["access_token"]
                     user_data = data["user"]
                     self.user_id = user_data.get("id")
-                    if user_data.get("aegis_code") == TEST_CREDENTIALS["aegis_code"]:
+                    if user_data.get("kailash_code") == TEST_CREDENTIALS["kailash_code"]:
                         self.log_test("Authentication Login", True, 
-                                    f"✅ Login successful with AEGIS Code: {TEST_CREDENTIALS['aegis_code']}", 
-                                    {"user_name": user_data.get("full_name"), "aegis_code": user_data.get("aegis_code"), "token_received": True})
+                                    f"✅ Login successful with Kailash Code: {TEST_CREDENTIALS['kailash_code']}", 
+                                    {"user_name": user_data.get("full_name"), "kailash_code": user_data.get("kailash_code"), "token_received": True})
                     else:
                         self.log_test("Authentication Login", False, 
-                                    "AEGIS code mismatch in response")
+                                    "Kailash code mismatch in response")
                 else:
                     self.log_test("Authentication Login", False, 
                                 "Missing access_token or user in response", data)
@@ -434,10 +434,10 @@ class KailashIntelligenceVoiceTester:
     
     def run_all_tests(self):
         """Run all intelligence and voice API tests"""
-        print("🚀 STARTING KAILASH AEGIS HUB - DAILY INTELLIGENCE & VOICE API TESTING")
+        print("🚀 STARTING Kailash - DAILY INTELLIGENCE & VOICE API TESTING")
         print("=" * 80)
         print(f"Backend URL: {BACKEND_URL}")
-        print(f"Test Credentials: AEGIS Code {TEST_CREDENTIALS['aegis_code']}")
+        print(f"Test Credentials: Kailash Code {TEST_CREDENTIALS['kailash_code']}")
         print("Testing: Authentication, Daily Intelligence APIs, Voice Input API, Health & Dashboard")
         print("=" * 80)
         print()
@@ -476,7 +476,7 @@ class KailashIntelligenceVoiceTester:
     def print_final_summary(self):
         """Print final test summary"""
         print("=" * 80)
-        print("🏁 KAILASH AEGIS HUB - INTELLIGENCE & VOICE API TESTING COMPLETED")
+        print("🏁 Kailash - INTELLIGENCE & VOICE API TESTING COMPLETED")
         print("=" * 80)
         
         pass_rate = (self.passed_tests / self.total_tests * 100) if self.total_tests > 0 else 0

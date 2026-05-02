@@ -1,8 +1,0 @@
-{
-  "department_config": {
-    "name": "KARTIKEYA",
-    "scope": "INTERNAL",
-    "priority": "MEDIUM",
-    "automation_rate_target": 0.78
-  }
-}

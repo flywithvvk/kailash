@@ -8,10 +8,10 @@ set -euo pipefail
 APP_DIR="/opt/kailash"
 REPO_URL="https://github.com/flywithvvk/kailash.git"
 BRANCH="${DEPLOY_BRANCH:-main}"
-COMPOSE_FILE="deploy/docker/docker-compose.prod.yml"
+COMPOSE_FILE="docker-compose.yml"
 
 echo "═══════════════════════════════════════════════════"
-echo " KAILASH AEGIS HUB — Vultr Deployment"
+echo " Kailash — Vultr Deployment"
 echo " Branch: ${BRANCH}"
 echo "═══════════════════════════════════════════════════"
 
@@ -51,10 +51,10 @@ update_code() {
 
 check_env() {
     echo "▶ Checking environment..."
-    if [ ! -f "${APP_DIR}/apps/backend/.env" ]; then
+    if [ ! -f "${APP_DIR}/backend/.env" ]; then
         echo "  ⚠️  No .env found. Copying example..."
-        cp "${APP_DIR}/apps/backend/.env.example" "${APP_DIR}/apps/backend/.env"
-        echo "  ❗ EDIT ${APP_DIR}/apps/backend/.env with production values!"
+        cp "${APP_DIR}/backend/.env.example" "${APP_DIR}/backend/.env"
+        echo "  ❗ EDIT ${APP_DIR}/backend/.env with production values!"
     fi
     echo "  ✅ Environment file present"
 }
@@ -141,7 +141,7 @@ main() {
 
     echo ""
     echo "═══════════════════════════════════════════════════"
-    echo " ✅ KAILASH AEGIS HUB deployed!"
+    echo " ✅ Kailash deployed!"
     echo " API:   https://api.kailash-ai.in"
     echo " Docs:  https://api.kailash-ai.in/api/docs"
     echo "═══════════════════════════════════════════════════"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PHASE 3 PRODUCTION EATURES TESTING SUITE OR KAILASH AEGIS HU
+PHASE 3 PRODUCTION EATURES TESTING SUITE OR Kailash
 Tests production security features, rate limiting, authentication logging, and error handling
 Domain: kailash-ai.in
 """
@@ -19,14 +19,14 @@ ACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 
 # Test credentials from review request
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 
 # New user registration test data
 NEW_USER_DATA = {
-    "email": "test@aegishub.com",
-    "aegis_code": "TEST",
+    "email": "test@Kailash.com",
+    "kailash_code": "TEST",
     "full_name": "Test User",
     "password": "Test@3"
 }
@@ -146,7 +146,7 @@ class ackendTester:
             
             # Now test failed login attempts
             wrong_credentials = {
-                "aegis_code": TEST_CREDENTIALS["aegis_code"],
+                "kailash_code": TEST_CREDENTIALS["kailash_code"],
                 "password": "WrongPassword3"
             }
             
@@ -287,7 +287,7 @@ class ackendTester:
                 expected_fields = ["status", "app", "version"]
                 
                 if all(field in data for field in expected_fields):
-                    if data.get("status") == "healthy" and "KAILASH AEGIS HU" in data.get("app", ""):
+                    if data.get("status") == "healthy" and "Kailash" in data.get("app", ""):
                         self.log_test("Health Endpoint", True, 
                                     f"Health check passed with correct structure", data)
                     else:
@@ -310,7 +310,7 @@ class ackendTester:
             
             if response.status_code == :
                 data = response.json()
-                if "Welcome to KAILASH AEGIS HU ackend API" in data.get("message", ""):
+                if "Welcome to Kailash ackend API" in data.get("message", ""):
                     self.log_test("Root Endpoint", True, 
                                 f"Status , correct welcome message returned", data)
                 else:
@@ -338,7 +338,7 @@ class ackendTester:
                 if all(field in data for field in required_fields):
                     user_data = data["user"]
                     if (user_data.get("email") == NEW_USER_DATA["email"] and 
-                        user_data.get("aegis_code") == NEW_USER_DATA["aegis_code"]):
+                        user_data.get("kailash_code") == NEW_USER_DATA["kailash_code"]):
                         self.log_test("User Registration", True, 
                                     f"User registered successfully", 
                                     {"user": user_data, "token_present": bool(data.get("access_token"))})
@@ -378,13 +378,13 @@ class ackendTester:
                     user_data = data["user"]
                     self.auth_token = data["access_token"]  # Store for later tests
                     
-                    if user_data.get("aegis_code") == TEST_CREDENTIALS["aegis_code"]:
+                    if user_data.get("kailash_code") == TEST_CREDENTIALS["kailash_code"]:
                         self.log_test("Login Valid Credentials", True, 
                                     f"Login successful with JWT token", 
                                     {"user": user_data, "token_received": True})
                     else:
                         self.log_test("Login Valid Credentials", alse, 
-                                    f"AEGIS code mismatch in response", user_data)
+                                    f"Kailash code mismatch in response", user_data)
                 else:
                     self.log_test("Login Valid Credentials", alse, 
                                 f"Missing required fields in response", data)
@@ -398,7 +398,7 @@ class ackendTester:
     def test_login_invalid_credentials(self):
         """Test POST /api/auth/login with invalid credentials"""
         try:
-            invalid_creds = {"aegis_code": "INVALID3", "password": "wrongpassword"}
+            invalid_creds = {"kailash_code": "INVALID3", "password": "wrongpassword"}
             response = requests.post(f"{ACKEND_URL}/auth/login", 
                                    json=invalid_creds, timeout=)
             
@@ -424,15 +424,15 @@ class ackendTester:
             
             if response.status_code == :
                 data = response.json()
-                required_fields = ["id", "email", "aegis_code", "full_name"]
+                required_fields = ["id", "email", "kailash_code", "full_name"]
                 
                 if all(field in data for field in required_fields):
-                    if data.get("aegis_code") == TEST_CREDENTIALS["aegis_code"]:
+                    if data.get("kailash_code") == TEST_CREDENTIALS["kailash_code"]:
                         self.log_test("Get Current User", True, 
                                     f"Current user info retrieved successfully", data)
                     else:
                         self.log_test("Get Current User", alse, 
-                                    f"AEGIS code mismatch", data)
+                                    f"Kailash code mismatch", data)
                 else:
                     self.log_test("Get Current User", alse, 
                                 f"Missing required fields", data)
@@ -1398,11 +1398,11 @@ class ackendTester:
     def run_all_tests(self):
         """Run PHASE 3 Production eatures tests according to review request"""
         print("=" * )
-        print("PHASE 3 PRODUCTION EATURES TESTING SUITE OR KAILASH AEGIS HU")
+        print("PHASE 3 PRODUCTION EATURES TESTING SUITE OR Kailash")
         print("Domain: kailash-ai.in | Company: Go4Garage")
         print("=" * )
         print(f"Testing ackend URL: {ACKEND_URL}")
-        print(f"Test Credentials: AEGIS Code {TEST_CREDENTIALS['aegis_code']}")
+        print(f"Test Credentials: Kailash Code {TEST_CREDENTIALS['kailash_code']}")
         print()
         
         # PHASE 3 PRODUCTION EATURES (Priority: Critical)
@@ -1518,7 +1518,7 @@ class ackendTester:
             print()
         
         if len(self.failed_tests) == :
-            print(" ALL TESTS PASSED! KAILASH AEGIS HU ACKEND IS ULLY OPERATIONAL!")
+            print(" ALL TESTS PASSED! Kailash ACKEND IS ULLY OPERATIONAL!")
         elif critical_passed == len(critical_tests):
             print("[OK] CRITICAL SYSTEMS OPERATIONAL - ackend ready for production")
         else:

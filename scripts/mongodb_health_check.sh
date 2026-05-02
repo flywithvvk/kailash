@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MongoDB Health Check Script for AEGIS HUB - KAILASH AI
+# MongoDB Health Check Script for Kailash - KAILASH AI
 
 # Colors
 GREEN='\033[0;32m'
@@ -9,7 +9,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo "=================================================="
-echo "AEGIS HUB - MongoDB Health Check"
+echo "Kailash - MongoDB Health Check"
 echo "=================================================="
 echo ""
 
@@ -28,7 +28,7 @@ echo ""
 # Check database connectivity
 echo "🔍 Checking Database Connectivity..."
 mongosh --quiet --eval "
-    db = db.getSiblingDB('kailash_aegis');
+    db = db.getSiblingDB('kailash');
     try {
         const result = db.runCommand({ ping: 1 });
         if (result.ok === 1) {
@@ -45,7 +45,7 @@ echo ""
 # Check collections
 echo "🔍 Checking Collections..."
 mongosh --quiet --eval "
-    db = db.getSiblingDB('kailash_aegis');
+    db = db.getSiblingDB('kailash');
     const collections = db.getCollectionNames();
     const expectedCollections = [
         'users', 'departments', 'tasks', 'ganesha_commands',
@@ -76,7 +76,7 @@ echo ""
 # Check indexes
 echo "🔍 Checking Indexes..."
 mongosh --quiet --eval "
-    db = db.getSiblingDB('kailash_aegis');
+    db = db.getSiblingDB('kailash');
     
     let totalIndexes = 0;
     const collections = ['users', 'departments', 'tasks', 'ganesha_commands', 'activities'];
@@ -98,7 +98,7 @@ echo ""
 # Check data integrity
 echo "🔍 Checking Data Integrity..."
 mongosh --quiet --eval "
-    db = db.getSiblingDB('kailash_aegis');
+    db = db.getSiblingDB('kailash');
     
     // Check users
     const userCount = db.users.countDocuments();
@@ -123,7 +123,7 @@ echo ""
 # Check database size
 echo "🔍 Checking Database Size..."
 mongosh --quiet --eval "
-    db = db.getSiblingDB('kailash_aegis');
+    db = db.getSiblingDB('kailash');
     const stats = db.stats();
     
     const dataSizeMB = (stats.dataSize / 1024 / 1024).toFixed(2);
@@ -145,7 +145,7 @@ echo ""
 # Check for any errors in MongoDB logs
 echo "🔍 Checking Recent MongoDB Activity..."
 mongosh --quiet --eval "
-    db = db.getSiblingDB('kailash_aegis');
+    db = db.getSiblingDB('kailash');
     
     // Get recent activities
     const recentActivities = db.activities.find().sort({created_at: -1}).limit(5);
@@ -164,7 +164,7 @@ echo ""
 echo "🔍 Checking Performance..."
 START_TIME=$(date +%s%N)
 mongosh --quiet --eval "
-    db = db.getSiblingDB('kailash_aegis');
+    db = db.getSiblingDB('kailash');
     db.users.findOne({});
 " > /dev/null 2>&1
 END_TIME=$(date +%s%N)

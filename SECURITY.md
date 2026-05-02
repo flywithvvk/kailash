@@ -40,15 +40,14 @@ timeline within 7 days.
 
 ## Authentication Model
 
-- **Service-to-service** — every KAILASH-AI service is guarded by
+- **Internal token** — platform services are guarded by
   `require_internal_token`, which checks `X-Platform-Token` against
-  `PLATFORM_INTERNAL_TOKEN`. The gateway forwards the header verbatim.
-- **Consumer-to-gateway** — consumers must hold the internal token; it
+  `PLATFORM_INTERNAL_TOKEN`. No-op in dev mode.
+- **Producer-to-platform** — consumers must hold the internal token; it
   should be provisioned per deployment and rotated on any suspected
   exposure.
-- **End-user auth** — handled inside consumer apps (e.g. AEGIS Hub uses
-  three-factor auth + JWT). KAILASH-AI services never see end-user
-  credentials.
+- **End-user auth** — handled inside the main application (three-factor auth
+  + JWT). Platform services never see end-user credentials.
 
 ## Transport
 

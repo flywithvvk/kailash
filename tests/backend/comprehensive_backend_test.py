@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-COMPREHENSIVE BACKEND TESTING FOR AEGIS HUB APPLICATION
+COMPREHENSIVE BACKEND TESTING FOR Kailash APPLICATION
 Production Deployment Testing as per Review Request
 
 Base URL: https://ganesha-v2-api.preview.emergentagent.com/api
-Test Credentials: AEGIS Code <REDACTED_AEGIS_CODE>, Password <REDACTED_PASSWORD>
+Test Credentials: Kailash Code <REDACTED_kailash_code>, Password <REDACTED_PASSWORD>
 
 Test Categories:
 1. Health Check Endpoints
@@ -28,7 +28,7 @@ BACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 
 # Test credentials from review request (updated based on working credentials)
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 
@@ -140,7 +140,7 @@ class ComprehensiveBackendTester:
                         self.log_test("Authentication Login", True, 
                                     "Login successful with valid JWT token", 
                                     {"user_name": user_data.get("full_name"), 
-                                     "aegis_code": user_data.get("aegis_code"),
+                                     "kailash_code": user_data.get("kailash_code"),
                                      "token_format": "JWT"})
                     else:
                         self.log_test("Authentication Login", False, 
@@ -171,11 +171,11 @@ class ComprehensiveBackendTester:
             
             if response.status_code == 200:
                 data = response.json()
-                required_fields = ["id", "email", "aegis_code", "full_name"]
+                required_fields = ["id", "email", "kailash_code", "full_name"]
                 if all(field in data for field in required_fields):
                     self.log_test("Get Current User", True, 
                                 f"Retrieved current user: {data.get('full_name')}", 
-                                {"aegis_code": data.get("aegis_code"), 
+                                {"kailash_code": data.get("kailash_code"), 
                                  "email": data.get("email"),
                                  "is_admin": data.get("is_admin")})
                 else:
@@ -546,7 +546,7 @@ class ComprehensiveBackendTester:
         """Test invalid credentials handling"""
         try:
             invalid_creds = {
-                "aegis_code": "INVALID",
+                "kailash_code": "INVALID",
                 "password": "wrongpassword"
             }
             response = requests.post(f"{BACKEND_URL}/auth/login", 
@@ -624,10 +624,10 @@ class ComprehensiveBackendTester:
     
     def run_all_tests(self):
         """Run all comprehensive backend tests"""
-        print("🚀 STARTING COMPREHENSIVE BACKEND TESTING FOR AEGIS HUB")
+        print("🚀 STARTING COMPREHENSIVE BACKEND TESTING FOR Kailash")
         print("=" * 80)
         print(f"Backend URL: {BACKEND_URL}")
-        print(f"Test Credentials: AEGIS Code {TEST_CREDENTIALS['aegis_code']}")
+        print(f"Test Credentials: Kailash Code {TEST_CREDENTIALS['kailash_code']}")
         print("Testing: Health, Auth, Password Reset, Protected Endpoints, 2FA, Security")
         print("=" * 80)
         print()

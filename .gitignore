@@ -72,11 +72,10 @@ AGENT.md
 
 # Logs
 *.log
-apps/backend/logs/
+backend/logs/
 *.log*
 
 # Project-specific
-apps/kailash-backend/
 .github/copilot-instructions.md
 deploy/docker/docker-compose.kailash.yml
 
@@ -116,6 +115,6 @@ agenthub/agents/youtube/db
 *.env.*
 !.env.example
 !*.env.example
-!apps/frontend/.env.production
-!apps/frontend/.env.staging
-!apps/frontend/.env.development
+!frontend/.env.production
+!frontend/.env.staging
+!frontend/.env.development

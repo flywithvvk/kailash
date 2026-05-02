@@ -1,14 +1,14 @@
-"""Tests for kailash_shared platform library."""
+"""Tests for backend.shared platform library."""
 from __future__ import annotations
 
 import pytest
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.testclient import TestClient
 
-from kailash_shared.app import build_app
-from kailash_shared.auth import require_internal_token
-from kailash_shared.config import BaseServiceSettings
-from kailash_shared.errors import NotFoundError, ValidationError
+from backend.shared.app import build_app
+from backend.shared.auth import require_internal_token
+from backend.shared.config import BaseServiceSettings
+from backend.shared.errors import NotFoundError, ValidationError
 
 
 def _make_app(routers=None) -> FastAPI:

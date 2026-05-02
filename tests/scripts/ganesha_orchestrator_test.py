@@ -15,7 +15,7 @@ ACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 
 # Test credentials from review request
 TEST_CREDENTIALS = {
-    "aegis_code": "<REDACTED_AEGIS_CODE>",
+    "kailash_code": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>"
 }
 
@@ -63,7 +63,7 @@ class GaneshaOrchestratorTester:
                     user_data = data["user"]
                     
                     self.log_test("Authentication", True, 
-                                f"Successfully authenticated with AEGIS Code {TEST_CREDENTIALS['aegis_code']}", 
+                                f"Successfully authenticated with Kailash Code {TEST_CREDENTIALS['kailash_code']}", 
                                 {"user": user_data, "token_received": True})
                     return True
                 else:
@@ -265,7 +265,7 @@ class GaneshaOrchestratorTester:
                     
                     if ganesha_thinking_events >  and len(full_response) > :
                         # Check if response is contextual and intelligent
-                        kailash_keywords = ['kailash', 'project', 'status', 'phase', 'development', 'production', 'aegis']
+                        kailash_keywords = ['kailash', 'project', 'status', 'phase', 'development', 'production', 'Kailash']
                         if any(keyword in full_response.lower() for keyword in kailash_keywords):
                             self.log_test("Orchestrate KAILASH Status", True, 
                                         f"[OK] Claude responded intelligently about KAILASH project", 
@@ -385,7 +385,7 @@ class GaneshaOrchestratorTester:
         print("Testing Real Anthropic API Key Integration")
         print("=" * 8)
         print(f"ackend URL: {ACKEND_URL}")
-        print(f"Test Credentials: AEGIS Code {TEST_CREDENTIALS['aegis_code']}")
+        print(f"Test Credentials: Kailash Code {TEST_CREDENTIALS['kailash_code']}")
         print(f"Timestamp: {datetime.now().isoformat()}")
         print()
         

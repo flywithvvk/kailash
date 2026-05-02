@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-COMPREHENSIVE ACKEND TESTING OR KAILASH-AEGISHU INTEGRATION
+COMPREHENSIVE ACKEND TESTING OR KAILASH INTEGRATION
 Tests ALL backend API endpoints with detailed validation as requested
 """
 
@@ -19,7 +19,7 @@ ACKEND_URL = "https://ganesha-v2-api.preview.emergentagent.com/api"
 
 # Test credentials
 TEST_CREDENTIALS = {
-    "username": "<REDACTED_AEGIS_CODE>",
+    "username": "<REDACTED_kailash_code>",
     "password": "<REDACTED_PASSWORD>@#@"
 }
 
@@ -70,7 +70,7 @@ class KailashComprehensiveTester:
             return None, response_time, str(e)
 
     # ============================================
-    # . AEGISHU CORE ENDPOINTS
+    # . KailashHU CORE ENDPOINTS
     # ============================================
 
     def test_root_endpoint(self):
@@ -84,7 +84,7 @@ class KailashComprehensiveTester:
         if response.status_code == :
             try:
                 data = response.json()
-                expected_message = "AEGISHU with KAILASH Integration - Hello World"
+                expected_message = "KailashHU with KAILASH Integration - Hello World"
                 if expected_message in data.get("message", ""):
                     self.log_test("Root Endpoint", True, 
                                 f"Status , correct message returned", data, response_time)
@@ -180,7 +180,7 @@ class KailashComprehensiveTester:
         """Test POST /api/auth/login with invalid credentials"""
         invalid_payloads = [
             {"username": "invalid", "password": "invalid"},
-            {"username": "<REDACTED_AEGIS_CODE>", "password": "wrong_password"},
+            {"username": "<REDACTED_kailash_code>", "password": "wrong_password"},
             {"username": "wrong_user", "password": "<REDACTED_PASSWORD>@#@"},
         ]
         
@@ -810,14 +810,14 @@ class KailashComprehensiveTester:
     def run_comprehensive_tests(self):
         """Run all comprehensive tests"""
         print("=" * )
-        print("COMPREHENSIVE ACKEND TESTING OR KAILASH-AEGISHU INTEGRATION")
+        print("COMPREHENSIVE ACKEND TESTING OR KAILASH INTEGRATION")
         print("=" * )
         print(f"Testing ackend URL: {ACKEND_URL}")
         print(f"Test Credentials: {TEST_CREDENTIALS['username']} / {TEST_CREDENTIALS['password']}")
         print()
         
-        # . AEGISHU Core Endpoints
-        print(" . AEGISHU CORE ENDPOINTS")
+        # . KailashHU Core Endpoints
+        print(" . KailashHU CORE ENDPOINTS")
         print("-" * )
         self.test_root_endpoint()
         self.test_status_create()
@@ -910,7 +910,7 @@ class KailashComprehensiveTester:
         
         # Categorize results
         categories = {
-            "AEGISHU Core": [],
+            "KailashHU Core": [],
             "Authentication": [],
             "KAILASH Endpoints": [],
             "Error Handling": [],
@@ -923,7 +923,7 @@ class KailashComprehensiveTester:
         for result in self.test_results:
             test_name = result["test"]
             if any(x in test_name.lower() for x in ["root", "status"]):
-                categories["AEGISHU Core"].append(result)
+                categories["KailashHU Core"].append(result)
             elif any(x in test_name.lower() for x in ["login", "logout", "session", "auth"]):
                 categories["Authentication"].append(result)
             elif any(x in test_name.lower() for x in ["kailash", "ganesha", "shiv", "parvati", "department", "task"]):
