@@ -59,6 +59,27 @@ chainlit.md
 .ipynb_checkpoints/
 .ac
 
+# Local tool configurations
+.cursor/
+.cursor
+.windsurfrules
+.agents/
+.jetro/
+.claude/
+CLAUDE.md
+AGENT.md
+-w
+
+# Logs
+*.log
+apps/backend/logs/
+*.log*
+
+# Project-specific
+apps/kailash-backend/
+.github/copilot-instructions.md
+deploy/docker/docker-compose.kailash.yml
+
 # Deployment
 .vercel
 .firebase/
